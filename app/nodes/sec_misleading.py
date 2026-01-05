@@ -2,12 +2,21 @@ from app.nodes.nodeConfig import AgentState
 from google import genai
 from google.genai import types
 from app.utility import load_json_file, load_text_file
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parents[2]
 
+REGULATORY_CONTEXT = load_text_file(
+    BASE_DIR / "prompts/cluster_claims/sec/MisleadingUnsubstantiatedClaims_v1.0.txt"
+)
+
+GROUND_TRUTH = load_json_file(
+    BASE_DIR / "prompts/ground_truth/sec/sec_misleading_examples.json"
+)
 
 def sec_misleading(state:AgentState)->AgentState:
-    REGULATORY_CONTEXT = load_text_file(r'...\prompts\context\sec\sec_general_prohibitions.txt')
-    GROUND_TRUTH = load_json_file(r'...\prompts\ground_truth\sec\sec_misleading_examples.json')
+    
+  
     SYSTEM_PROMPT = f"""
     You are a SEC compliance examiner. Your sole purpose is to detect misleading, unsubstantiated, or promissory statements in narrative text.
 

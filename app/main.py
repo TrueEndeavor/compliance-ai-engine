@@ -2,7 +2,7 @@
 from dotenv import load_dotenv; load_dotenv()
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from app.workflow import run_workflow
-
+import json
 app = FastAPI()
 
 @app.post("/upload-file")
@@ -11,16 +11,22 @@ async def upload_file(file: UploadFile = File(...)):
     try:
         pdf_bytes = await file.read()
 
-        
+        workflow_result = run_workflow(pdf_bytes)
 
-        #TODO: implement workflow and return the output from gemini
-        gemini_output = run_workflow(pdf_bytes)
+        raw_artifact = workflow_result.get("sec_misleading_artifact")
 
-        return gemini_output
+        # ✅ Convert JSON string → Python dict
+        try:
+            parsed_artifact = json.loads(raw_artifact)
+        except json.JSONDecodeError:
+            parsed_artifact = {
+                "error": "LLM returned invalid JSON",
+                "raw_output": raw_artifact
+            }
 
-    except Exception as e:
-        print(f"Error processing PDF upload: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        return {
+            "sec_misleading_artifact": parsed_artifact
+        }
         
     finally:
         await file.close()

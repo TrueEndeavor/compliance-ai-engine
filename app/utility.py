@@ -7,7 +7,6 @@ def load_json_file(file_path: str) -> Optional[str]:
         with open(file_path, 'r', encoding='utf-8') as file:
 
             data = json.load(file)
-
             return json.dumps(data, indent=2)
     
     except FileNotFoundError:

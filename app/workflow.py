@@ -2,7 +2,7 @@ from langgraph.graph import StateGraph,START,END
 from app.nodes.nodeConfig import AgentState
 from app.nodes.sec_misleading import sec_misleading
 
-def run_workflow(pdfbytes,
+def run_workflow(pdfbytes
                 #  sec_MisleadingUnsubstantiatedClaims,
                 #  sec_general_prohibitions,
                 #  sec_misleading_examples
