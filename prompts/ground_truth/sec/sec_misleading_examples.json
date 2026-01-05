@@ -1,0 +1,27 @@
+[
+  {
+    "pattern": "Blanket Recommendation",
+    "bad_example": "This is the reason why we think all retail investors should invest in JPM products.",
+    "reasoning": "Universal suitability claim ('all retail investors') without acknowledging individual circumstances or conflicts of interest."
+  },
+  {
+    "pattern": "Guaranteed Outcome",
+    "bad_example": "market volatility will be transformed into tax savings without the need to deviate from long-term goals.",
+    "reasoning": "Promissory language ('will be transformed') implies a guaranteed benefit. Tax benefits are never guaranteed and depend on individual circumstances."
+  },
+  {
+    "pattern": "Prescriptive Product Push",
+    "bad_example": "reinvesting the proceeds into a JPM security, or basket of JPM securities, with similar characteristics.",
+    "reasoning": "Directs investors to proprietary products without establishing suitability or mentioning alternatives."
+  },
+  {
+    "pattern": "Universal Suitability",
+    "bad_example": "The views and strategies described should be suitable for all investors.",
+    "reasoning": "No strategy is suitable for 'all' investors. This is a per se violation of the fair and balanced standard."
+  },
+  {
+    "pattern": "Disclaimer Inversion",
+    "bad_example": "Past performance is a guarantee or a reliable indicator of future results.",
+    "reasoning": "Factually incorrect. The required standard is 'Past performance is NOT a guarantee'."
+  }
+]
