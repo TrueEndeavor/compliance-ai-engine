@@ -1,0 +1,6 @@
+langchain
+langgraph
+langchain-core
+fastapi
+pydantic
+python-dotenv
