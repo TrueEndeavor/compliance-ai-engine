@@ -1,0 +1,14 @@
+SEC RULE 206(4)-1(a) - GENERAL PROHIBITIONS
+
+An advertisement may not:
+1. Include any untrue statement of a material fact.
+2. Omit a material fact necessary to make the statement not misleading.
+3. Include a material statement of fact that the adviser cannot substantiate upon demand.
+4. Discuss potential benefits without fair and balanced treatment of material risks.
+5. Include a reference to specific investment advice that is not fair and balanced.
+6. Include information likely to cause an untrue or misleading inference.
+
+KEY INTERPRETATIONS:
+- "Universal" or "Blanket" recommendations (e.g., "suitable for everyone") are inherently misleading.
+- Promissory language (e.g., "will ensure", "guarantees") is a per se violation if outcomes depend on market conditions.
+- Conflicts of interest (e.g., recommending proprietary products) must be clear and not buried.
