@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph,START,END
-from nodes.nodeConfig import AgentState
-from nodes.sec_misleading import sec_misleading
+from app.nodes.nodeConfig import AgentState
+from app.nodes.sec_misleading import sec_misleading
 
 def run_workflow(pdfbytes,
                 #  sec_MisleadingUnsubstantiatedClaims,

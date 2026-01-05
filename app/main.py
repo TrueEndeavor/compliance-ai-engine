@@ -1,8 +1,7 @@
 # pillaiyar suzhii
 from dotenv import load_dotenv; load_dotenv()
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from utility import load_json_file, load_text_file
-from workflow import run_workflow
+from app.workflow import run_workflow
 
 app = FastAPI()
 
