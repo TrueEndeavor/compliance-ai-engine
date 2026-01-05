@@ -7,11 +7,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 REGULATORY_CONTEXT = load_text_file(
-    BASE_DIR / "prompts/cluster_claims/sec/MisleadingUnsubstantiatedClaims_v1.0.txt"
+    str(BASE_DIR / "prompts/cluster_claims/sec/MisleadingUnsubstantiatedClaims_v1.0.txt")
 )
 
 GROUND_TRUTH = load_json_file(
-    BASE_DIR / "prompts/ground_truth/sec/sec_misleading_examples.json"
+    str(BASE_DIR / "prompts/ground_truth/sec/sec_misleading_examples.json")
 )
 
 def sec_misleading(state:AgentState)->AgentState:
