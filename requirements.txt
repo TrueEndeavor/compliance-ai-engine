@@ -1,7 +1,7 @@
 langchain
 langgraph
 langchain-core
-fastapi
+fastapi[standard]
 pydantic
 python-dotenv
 google-genai
