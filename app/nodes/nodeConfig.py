@@ -7,7 +7,7 @@ class AgentState(TypedDict):
     # sec_general_prohibitions:str
     # sec_misleading_examples:str
     sec_misleading_artifact:Optional[str]
-
+    sec_typography_artifact:Optional[str]
 
 
 

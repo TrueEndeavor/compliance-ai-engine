@@ -30,3 +30,27 @@ def load_text_file(file_path: str) -> Optional[str]:
 
     return None
 
+def clean_and_parse_json(raw):
+    if raw is None:
+        return None
+
+    if isinstance(raw, dict):
+        return raw
+
+    if isinstance(raw, str):
+        raw = raw.strip()
+        if raw.startswith("```"):
+            raw = raw.replace("```json", "").replace("```", "").strip()
+
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            return {
+                "error": "LLM returned invalid JSON",
+                "raw_output": raw
+            }
+
+    return {
+        "error": "Unexpected data type",
+        "raw_output": str(raw)
+    }
