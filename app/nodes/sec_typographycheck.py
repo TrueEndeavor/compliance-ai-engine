@@ -3,7 +3,7 @@ from google import genai
 from google.genai import types
 from app.utility import load_json_file, load_text_file
 from pathlib import Path
-
+import os
 
 
 def sec_typographycheck(state:AgentState)->AgentState:
@@ -53,7 +53,11 @@ Return only the JSON object adhering precisely to the schema defined in the syst
         data=state['marketing_file_bytes'],
         mime_type ='application/pdf'
     )
-    client  = genai.Client()
+    client  = genai.Client(
+        vertexai=True,
+        project=os.getenv("GCP_PROJECT_ID"),
+        location=os.getenv("GCP_LOCATION")
+    )
     llm_config=types.GenerateContentConfig(
         temperature=0.1,
         thinking_config =None
