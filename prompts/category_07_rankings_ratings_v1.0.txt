@@ -69,13 +69,24 @@ FLAG HERE – rankings/ratings/data context issues that remain:
 
 Key rule: "When the issue occurs within ratings, rankings, or factual data context—flag in Gate 2"
 
-5. Exact output schema
+5. Recommendation phrasing
+Use action-oriented language for each bucket:
+• Unidentified Ranking or Rating Provider: "Identify the ranking/rating provider with full source citation."
+• Missing Methodology or Selection Criteria: "Add methodology disclosure explaining how the ranking was determined."
+• Missing Time Period or Evaluation Date: "Add 'as of' date or evaluation period for the ranking/rating."
+• Inability to Validate Underlying Data: "Provide supporting documentation or source reference for third-party data."
+• Paid Rankings Without Disclosure: "Disclose any compensation paid for the ranking or award."
+• Outdated or Superseded Rankings: "Update to current rating or remove outdated ranking."
+• Mischaracterization of Ranking Scope: "Clarify the scope of the ranking (e.g., category vs. overall) and add '%' notation where applicable."
+
+6. Exact output schema
 Return JSON array only. Each item:
 {
   "location_hint": "<ONLY if explicit 'Page X' or 'Slide X' marker visible; otherwise empty string>",
   "snippet": "<exact text from document showing the ranking/rating/data>",
   "bucket": "Unidentified Ranking or Rating Provider | Missing Methodology or Selection Criteria | Missing Time Period or Evaluation Date | Inability to Validate Underlying Data | Paid Rankings Without Disclosure | Outdated or Superseded Rankings | Mischaracterization of Ranking Scope",
-  "rationale": "<1-2 sentences>"
+  "rationale": "<1-2 sentences explaining why this is flagged>",
+  "recommendation": "<action-oriented fix per section 5 phrasing>"
 }
 
 If no issues: return []

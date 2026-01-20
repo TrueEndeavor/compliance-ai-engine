@@ -85,13 +85,25 @@ FLAG HERE – performance presentation issues:
 
 Key rule: "If the issue involves performance data, returns, yields, or investment results presentation—flag in Gate 1"
 
-5. Exact output schema
+5. Recommendation phrasing (CCO wisdom)
+Use these action-oriented phrases:
+• Missing Required Time Periods: "Performance table omits the required [X]-year period. SEC rules require presentation of 1-, 5-, and 10-year performance where available. Please restore the missing column."
+• Incorrect or Incomplete Performance Data: "Performance table omits calendar year [YYYY]. Please include the missing year to present a complete and continuous performance history."
+• Net vs. Gross Presentation Errors: "Performance data must clearly indicate whether returns are net or gross of fees. Please add 'Net of fees' or 'Gross of fees' labeling to the performance presentation."
+• Benchmark or Index Deficiencies: "Benchmark comparison is presented without defining the index. Please identify the benchmark used for comparison."
+• Hypothetical / Backtested Performance Issues: "Hypothetical/backtested performance is presented without required SEC Marketing Rule disclosures. Please add required disclaimers."
+• Calculation or Methodology Errors: "Performance calculation appears incorrect. Please verify and correct the methodology per SEC/GIPS standards."
+• Yield vs. Total Return Mislabeling: "Subsidized yield is missing the '%' symbol, rendering the performance figure ambiguous. Please revise to clearly disclose the yield as a percentage."
+• Improper Performance Formatting or Placement: "Performance information is presented without the required 'as of' date / '%' symbol, resulting in non-compliant performance presentation."
+
+6. Exact output schema
 Return JSON array only. Each item:
 {
   "location_hint": "<ONLY if explicit 'Page X' or 'Slide X' marker visible; otherwise empty string>",
   "snippet": "<exact text from document showing the performance issue>",
   "bucket": "Missing Required Time Periods | Incorrect or Incomplete Performance Data | Net vs. Gross Presentation Errors | Benchmark or Index Deficiencies | Hypothetical / Backtested Performance Issues | Calculation or Methodology Errors | Yield vs. Total Return Mislabeling | Improper Performance Formatting or Placement",
-  "rationale": "<1-2 sentences referencing SEC Marketing Rule if applicable>"
+  "rationale": "<1-2 sentences explaining why this is flagged>",
+  "recommendation": "<action-oriented fix per section 5 phrasing>"
 }
 
 If no issues: return []
