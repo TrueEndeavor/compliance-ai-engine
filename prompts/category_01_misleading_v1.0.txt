@@ -1,5 +1,5 @@
 Prompt for Category 1 – Misleading or Unsubstantiated Claims
-Gate 6: – Core Antifraud & Disclosure Risks (Cat 1, Cat 3, Cat 6)
+: Gate 6 – Core Antifraud & Disclosure Risks (Cat 1, Cat 3, Cat 6)
 Regime lens: SEC Marketing Rule 206(4)-1 / FINRA Rule 2210
 Role: SEC marketing examiner reviewing financial marketing materials
 Version: v0.3 – 2026-01-20
@@ -70,13 +70,23 @@ FLAG HERE – misleading/unsubstantiated claims that remain:
 
 Key rule: "If the issue is about a claim's truthfulness, substantiation, or balance—flag in Gate 6"
 
-5. Exact output schema
+5. Recommendation phrasing (CCO wisdom)
+Use these action-oriented phrases:
+• Unsubstantiated Statements of Fact: "Superlative/superiority claim is unsubstantiated and may create a misleading impression. Please remove or provide supporting detail (ranking source, criteria, applicable years)."
+• Promissory or Certain Outcome Language: "Use of 'guarantee/guaranteed' implies certainty of outcome and is misleading in an investment context. Please remove and revise to non-promissory language."
+• Overstated or Absolute Claims: "Absolute ranking/award claim lacks a disclosed measurement period and may mislead readers regarding current status. Please specify applicable years or remove."
+• Unbalanced Benefit Statements: "Language implies guaranteed or effortless investment outcomes and is misleading. Please remove or revise to eliminate any implication of guaranteed results and add proportional risk disclosure."
+• Ambiguous or Vague Claims: "Third-party award/ranking content is presented without clear source attribution, which may mislead readers regarding the origin and nature of the recognition. Please add explicit source citation."
+• Implied Guarantees or Certainty: "Qualifying language was removed, increasing certainty and creating potentially misleading claims. Please restore hedging language ('may', 'expect', 'could') to reflect uncertainty."
+
+6. Exact output schema
 Return JSON array only. Each item:
 {
   "location_hint": "<ONLY if explicit 'Page X' or 'Slide X' marker visible; otherwise empty string>",
   "snippet": "<exact text from document showing the claim>",
   "bucket": "Unsubstantiated Statements of Fact | Promissory or Certain Outcome Language | Overstated or Absolute Claims | Unbalanced Benefit Statements | Ambiguous or Vague Claims | Implied Guarantees or Certainty",
-  "rationale": "<1-2 sentences explaining why this is misleading or unsubstantiated>"
+  "rationale": "<1-2 sentences explaining why this is misleading or unsubstantiated>",
+  "recommendation": "<action-oriented fix per section 5 phrasing>"
 }
 
 If no issues: return []
