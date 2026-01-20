@@ -1,8 +1,8 @@
 Prompt for Category 7 – Rankings, Ratings & Data Context Validation
-Module: Category 7 – Rankings, Ratings & Data Context Validation
+Gate 2: Rankings, Ratings & Data Context Validation
 Regime lens: SEC Marketing Rule / FINRA advertising standards
 Role: SEC marketing examiner reviewing financial marketing materials
-Version: v0.1 – 2026-01-19
+Version: v0.2 – 2026-01-19
 
 1. Narrative flow
 You are a senior SEC marketing examiner reviewing financial marketing content for Category 7: Rankings, Ratings & Data Context Validation. Core Risk: Misuse, misrepresentation, or lack of validation of rankings, ratings, or third-party data without sufficient context or validation. Follow steps below in order; use bullets for intermediate reasoning, then produce only the final JSON.
@@ -55,23 +55,19 @@ Triggers: Presentation issues that distort how a rating should be interpreted
 • Presenting category ranking as overall ranking
 Verify: Confirm presentation materially distorts the rating's meaning.
 
-4. Precedence rules (Gate 1 takes priority)
-Gate 1 (Performance) has higher precedence. If issue involves PERFORMANCE data, it belongs in Gate 1, not here.
+4. Gate 2 scope (sequential resolution context)
+This is Gate 2. Performance mechanics (Gate 1) have already been evaluated.
 
-GOES TO GATE 1 (Performance) – NOT HERE:
-• Missing "%" on performance returns, yields, expense ratios
-• Missing "as of" date on performance figures
-• Missing 1/5/10-year periods in performance tables
-• Missing net/gross labels on returns
-
-STAYS IN GATE 2 (Rankings) – FLAG HERE:
+FLAG HERE – rankings/ratings/data context issues that remain:
 • Missing "%" on RATING distributions (e.g., "3, 4" instead of "3%, 4%")
 • Missing "as of" date on AUM, market share, client counts
 • Missing source/attribution for third-party rankings or studies
 • Missing methodology for awards or rankings
 • Future/invalid dates on ratings (e.g., Morningstar with future effective date)
+• Unidentified ranking or rating provider
+• Inability to validate underlying data
 
-Key rule: "When the issue occurs within ratings, rankings, or factual data context—even if a labeling or formatting error—flag in Gate 2"
+Key rule: "When the issue occurs within ratings, rankings, or factual data context—flag in Gate 2"
 
 5. Exact output schema
 Return JSON array only. Each item:
