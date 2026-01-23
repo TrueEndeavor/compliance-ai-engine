@@ -86,6 +86,7 @@ Return JSON array only. Each item:
   "snippet": "<exact text from document showing the claim>",
   "bucket": "Unsubstantiated Statements of Fact | Promissory or Certain Outcome Language | Overstated or Absolute Claims | Unbalanced Benefit Statements | Ambiguous or Vague Claims | Implied Guarantees or Certainty",
   "rationale": "<1-2 sentences explaining why this is misleading or unsubstantiated>",
+  "rule_citation": "[Rule citations]",
   "recommendation": "<action-oriented fix per section 5 phrasing>"
 }
 

@@ -152,6 +152,7 @@ Return JSON array only. Each item:
   "snippet": "<exact text from document showing the performance issue>",
   "bucket": "Missing Required Time Periods | Incorrect or Incomplete Performance Data | Net vs. Gross Presentation Errors | Benchmark or Index Deficiencies | Hypothetical / Backtested Performance Issues | Calculation or Methodology Errors | Yield vs. Total Return Mislabeling | Improper Performance Formatting or Placement",
   "rationale": "<1-2 sentences explaining why this is flagged>",
+  "rule_citation": "[Rule citations]",
   "recommendation": "<action-oriented fix per section 5 phrasing>"
 }
 
