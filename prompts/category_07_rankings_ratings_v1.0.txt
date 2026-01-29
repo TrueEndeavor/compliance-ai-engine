@@ -86,6 +86,7 @@ Return JSON array only. Each item:
   "snippet": "<exact text from document showing the ranking/rating/data>",
   "bucket": "Unidentified Ranking or Rating Provider | Missing Methodology or Selection Criteria | Missing Time Period or Evaluation Date | Inability to Validate Underlying Data | Paid Rankings Without Disclosure | Outdated or Superseded Rankings | Mischaracterization of Ranking Scope",
   "rationale": "<1-2 sentences explaining why this is flagged>",
+  "rule_citation": "[Rule citations]",
   "recommendation": "<action-oriented fix per section 5 phrasing>"
 }
 
