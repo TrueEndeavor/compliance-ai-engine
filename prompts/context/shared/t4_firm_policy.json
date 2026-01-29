@@ -1,0 +1,44 @@
+{
+  "tier": "T4",
+  "source": "FIRM_COMPLIANCE_POLICY",
+  "authority": "INTERNAL",
+  "last_updated": "2026-01-29",
+  "firm_name": "{{FIRM_NAME}}",
+  "policies": [
+    {
+      "policy_id": "MKT-001",
+      "title": "Performance Claims Pre-Approval",
+      "rule": "All performance claims require Legal/Compliance pre-approval before publication.",
+      "bucket_mapping": ["A", "C"],
+      "enforcement": "MANDATORY"
+    },
+    {
+      "policy_id": "MKT-002",
+      "title": "Superlative Prohibition",
+      "rule": "Superlatives ('best', 'leading', '#1', 'top', 'superior') are prohibited without documented third-party source dated within 12 months.",
+      "bucket_mapping": ["C"],
+      "enforcement": "MANDATORY"
+    },
+    {
+      "policy_id": "MKT-003",
+      "title": "Risk Disclosure Proximity",
+      "rule": "Benefit statements require adjacent risk disclosure within same paragraph or bullet group. Maximum separation: 2 sentences.",
+      "bucket_mapping": ["D"],
+      "enforcement": "MANDATORY"
+    },
+    {
+      "policy_id": "MKT-004",
+      "title": "Hedge Language Requirements",
+      "rule": "Forward-looking statements must include 'may', 'could', 'seeks to', or equivalent hedge. 'Will' and 'shall' are prohibited for outcome statements.",
+      "bucket_mapping": ["B", "F"],
+      "enforcement": "MANDATORY"
+    },
+    {
+      "policy_id": "MKT-005",
+      "title": "Context Completeness",
+      "rule": "Performance comparisons must specify: (1) benchmark name, (2) time period, (3) gross/net of fees, (4) source if third-party.",
+      "bucket_mapping": ["A", "E"],
+      "enforcement": "MANDATORY"
+    }
+  ]
+}

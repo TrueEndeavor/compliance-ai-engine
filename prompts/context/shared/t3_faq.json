@@ -1,0 +1,38 @@
+{
+  "tier": "T3",
+  "source": "SEC_FAQ_AND_STAFF_GUIDANCE",
+  "authority": "ADVISORY",
+  "last_updated": "2026-01-29",
+  "faqs": [
+    {
+      "id": "FAQ-001",
+      "question": "What constitutes 'fair and balanced' presentation of risks?",
+      "answer": "Risk disclosures should be proportional to benefit claims in prominence, placement, and specificity. A one-sentence benefit followed by a paragraph of risks is balanced; a paragraph of benefits followed by fine-print risks is not.",
+      "bucket_mapping": ["D"]
+    },
+    {
+      "id": "FAQ-002",
+      "question": "Are hedged statements like 'may' or 'seeks to' automatically compliant?",
+      "answer": "Hedging language reduces but does not eliminate risk. 'Seeks to guarantee' is still problematic because 'guarantee' implies certainty regardless of hedge. Context and overall impression matter.",
+      "bucket_mapping": ["B", "F"]
+    },
+    {
+      "id": "FAQ-003",
+      "question": "How should superlative claims be substantiated?",
+      "answer": "Superlatives require four elements: (1) source of ranking/data, (2) methodology used, (3) applicable time period, (4) universe of comparison. Missing any element makes the claim unsubstantiated.",
+      "bucket_mapping": ["A", "C"]
+    },
+    {
+      "id": "FAQ-004",
+      "question": "Can we use terms like 'leading' or 'top' to describe our firm?",
+      "answer": "Only with substantiation. 'Leading' requires market share data with source. 'Top' requires ranking with methodology, time period, and category definition.",
+      "bucket_mapping": ["C"]
+    },
+    {
+      "id": "FAQ-005",
+      "question": "What about aspirational statements like 'we aim to outperform'?",
+      "answer": "Aspirational language ('aim to', 'seek to', 'strive to') is generally acceptable as it describes intent rather than promising outcomes. However, the overall context must not create misleading impression.",
+      "bucket_mapping": ["B", "F"]
+    }
+  ]
+}
