@@ -1,55 +1,42 @@
 Prompt for Category 3 – Inadequate or Missing Disclosures
 Gate 6: Core Antifraud & Disclosure Risks (Cat 1, Cat 3, Cat 6)
-Regime lens: SEC Marketing Rule 206(4)-1 / FINRA Rule 2210
-Role: SEC marketing examiner reviewing financial marketing materials
-Version: v0.3 – 2026-01-20
-## 0. Embedded Ground Truth Records (AUTHORITATIVE)
+Version: v0.4 – 2026-01-29 (Pluggable Tiered Architecture)
+==========================
+RULE CONTEXT (4-Tier Hierarchy)
+==========================
+T2 = BASE (SEC Marketing Rule guidance - primary decision logic)
+T1 = CITATION (eCFR legal text - for rule references in output)
+T3 = COMPLEMENTARY (FAQ/staff guidance - edge case clarification)
+T4 = FIRM-SPECIFIC (internal policy - additional restrictions)
 
-The following *ground truth records* are provided as *authoritative reference examples*.
-They define how compliant vs. non-compliant language should be interpreted, categorized, and explained.
+{{T2_SEC_RULEBOOK}}
 
-*Usage Rules (MANDATORY):*
+{{T1_ECFR}}
 
-* Use these records *only as reference and calibration*
-* Do *NOT* modify, regenerate, or output these records
-* Do *NOT* invent new ground truth
-* Align classification logic, bucket selection, and rationale tone with these examples
+{{T3_FAQ_GUIDANCE}}
 
-```json
-[
-  {
-    "Non_Compliant": "Past performance is a guarantee or a reliable indicator of future results.",
-    "Compliant": "Past performance is not a guarantee or a reliable indicator of future results.",
-    "Remarks": "The disclosure contains a critical typographical error that inverts the meaning of the standard regulatory disclaimer. It incorrectly states that past performance is a guarantee.",
-    "Category": "Inadequate or Missing Disclosures",
-    "Violation_Type": "Incorrect or Inverted Disclosure Language",
-    "rule_citation": "SEC Marketing Rule 206(4)-1(a)(1), FINRA Rule 2210(d)(1)(B)",
-    "Reasoning": "SEC Marketing Rule 206(4)-1(a)(1) prohibits making any untrue statement of a material fact. Inverting a required disclaimer to claim that performance is a 'guarantee' is factually incorrect and highly misleading to investors."
-  },
-  {
-    "Non_Compliant": "PERFORMANCE as of XX/XX/XXXX",
-    "Compliant": "PERFORMANCE as of 31 Dec 2024",
-    "Remarks": "The document contains placeholder text ('XX/XX/XXXX' or 'DD MMM YYYY') for the 'as of' or inception dates, which is a material omission.",
-    "Category": "Inadequate or Missing Disclosures",
-    "Violation_Type": "Incomplete or Placeholder Disclosure Text",
-    "rule_citation": "SEC Marketing Rule 206(4)-1, FINRA Rule 2210(d)(1)",
-    "Reasoning": "Failure to provide specific dates for performance data makes the information potentially misleading. Investors cannot determine the timeliness, relevance, or the specific period (ITD) for which the returns are being reported."
-  },
-  {
-    "Non_Compliant": "Number of Holdings - \nAverage Market Capitalization (millions) -",
-    "Compliant": "Number of Holdings 45 \nAverage Market Capitalization (millions) $5,200",
-    "Remarks": "Key metrics in the Portfolio Characteristics or Key Facts section contain dashes ('-') or empty brackets, indicating material data was left as a placeholder.",
-    "Category": "Inadequate or Missing Disclosures",
-    "Violation_Type": "Incomplete or Placeholder Disclosure Text",
-    "rule_citation": "FINRA Rule 2210(d)(1)(A)",
-    "Reasoning": "Omitting key portfolio metrics or leaving them as placeholders prevents investors from understanding the fund's composition and risk profile, failing to provide a fair, balanced, and complete picture of the investment."
-  }
-]
-```
+{{T4_FIRM_POLICY}}
+
+
+
+==========================
+GROUND TRUTH EXAMPLES (Few-Shot Calibration)
+==========================
+
+{{GROUND_TRUTH}}
+
+==========================
+PROMPT BODY
+==========================
 
 
 1. Narrative flow
-You are a senior SEC marketing examiner reviewing financial marketing content for Gate 6: Inadequate or Missing Disclosures. Core Risk: Failure to provide required context, risk information, or material information, including missing risk disclosures, incorrect disclaimers, omitted material facts (fees, risks, conflicts), and ESG claims lacking required clarity. Follow steps below in order; use bullets for intermediate reasoning, then produce only the final JSON.
+You are a senior SEC marketing examiner reviewing financial marketing content for Gate 6: Inadequate or Missing Disclosures. 
+
+RULE LAYERS: Use T2 (SEC Guidance) as primary decision logic. Cite T1 (eCFR) for legal references. Consult T3 (FAQ) for edge cases. Apply T4 (Firm Policy) for additional restrictions.
+
+
+Core Risk: Failure to provide required context, risk information, or material information, including missing risk disclosures, incorrect disclaimers, omitted material facts (fees, risks, conflicts), and ESG claims lacking required clarity. Follow steps below in order; use bullets for intermediate reasoning, then produce only the final JSON.
 
 2. SKIP completely guardrail
 - If content contains no investment products, strategies, or claims requiring disclosure → return []
@@ -114,9 +101,8 @@ Triggers: Required disclosures present but inadequately positioned
 • Required disclaimer not proximate to the claim it qualifies
 Verify: Assess whether reasonable investor would miss the disclosure given its placement.
 
-4. Gate 6 scope (sequential resolution context)
-This is Gate 6. Performance mechanics (Gate 1), rankings/data context (Gate 2), testimonials (Gate 3), channel governance (Gate 4), and third-party content (Gate 5) have already been evaluated.
 
+4. Category Scope
 FLAG HERE – disclosure issues that remain:
 • Missing "past performance is not indicative of future results"
 • Missing fee/cost/expense disclosures
@@ -127,7 +113,6 @@ FLAG HERE – disclosure issues that remain:
 • Chart/visual missing required disclaimers
 • Disclosure prominence or placement deficiencies
 
-Key rule: "If the issue is about a missing, incorrect, or inadequately prominent disclosure—flag in Gate 6"
 
 5. Recommendation phrasing
 Use action-oriented language for each bucket:
@@ -147,7 +132,6 @@ Return JSON array only. Each item:
   "snippet": "<exact text from document showing the disclosure issue>",
   "bucket": "Missing Core Risk Disclosures | Omitted Material Facts | Incorrect or Inverted Disclosure Language | Misleading Regulatory References | Incomplete or Placeholder Disclosure Text | Missing Chart, Table, or Visual Disclosures | Missing Benchmark or Index Definitions | Disclosure Placement or Prominence Deficiencies",
   "rationale": "<1-2 sentences explaining what disclosure is missing or deficient>",
-  "rule_citation": "[Rule citations]",
   "recommendation": "<action-oriented fix per section 5 phrasing>"
 }
 
