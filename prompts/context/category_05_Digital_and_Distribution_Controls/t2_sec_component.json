@@ -1,0 +1,111 @@
+
+{
+  "metadata": {
+    "standard": "Shared-Regulatory-Context-v1",
+    "document": "Investment Adviser Marketing Final Rule (IA-5653)",
+    "extraction_date": "2025-04-29"
+  },
+  "shared_context": {
+    "definitionOfCoveredActivity": {
+      "citation": "§ 275.206(4)-1(e)(1)",
+      "text": "Advertisement means: (i) Any direct or indirect communication an investment adviser makes to more than one person, or to one or more persons if the communication includes hypothetical performance, that offers the investment adviser's investment advisory services with regard to securities to prospective clients or investors in a private fund advised by the investment adviser or offers new investment advisory services with regard to securities to current clients or investors in a private fund advised by the investment adviser... (ii) Any endorsement or testimonial for which an investment adviser provides compensation, directly or indirectly, but does not include any information contained in a statutory or regulatory notice, filing, or other required communication, provided that such information is reasonably designed to satisfy the requirements of such notice, filing, or other required communication."
+    },
+    "globalProhibitionsOrStandards": {
+      "citation": "§ 275.206(4)-1(a)",
+      "items": [
+        "Include any untrue statement of a material fact, or omit to state a material fact necessary in order to make the statement made, in the light of the circumstances under which it was made, not misleading",
+        "Include a material statement of fact that the adviser does not have a reasonable basis for believing it will be able to substantiate upon demand by the Commission",
+        "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser",
+        "Discuss any potential benefits to clients or investors connected with or resulting from the investment adviser's services or methods of operation without providing fair and balanced treatment of any material risks or material limitations associated with the potential benefits",
+        "Include a reference to specific investment advice provided by the investment adviser where such investment advice is not presented in a manner that is fair and balanced",
+        "Include or exclude performance results, or present performance time periods, in a manner that is not fair and balanced",
+        "Otherwise be materially misleading"
+      ]
+    },
+    "scopeAndApplicabilityNotes": {
+      "citation": "§ 275.206(4)-1",
+      "text": "It is unlawful for any investment adviser registered or required to be registered under section 203 of the Act (15 U.S.C. 80b-3), directly or indirectly, to disseminate any advertisement that violates any of paragraphs (a) through (d) of this section. The definition of advertisement excludes: (A) Extemporaneous, live, oral communications; (B) Information contained in a statutory or regulatory notice, filing, or other required communication...; or (C) A communication that includes hypothetical performance that is provided: (1) In response to an unsolicited request... or (2) To a prospective or current investor in a private fund advised by the investment adviser in a one-on-one communication."
+    },
+    "recordkeepingOrDocumentationObligations": {
+      "citation": "§ 275.204-2(a)",
+      "text": "Books and records to be maintained by investment advisers: (7)(iv) Predecessor performance... and the performance or rate of return of any or all managed accounts, portfolios... or securities recommendations; (11)(i) A copy of each (A) Advertisement that the investment adviser disseminates, directly or indirectly... (15)(i) If not included in the advertisement, a record of the disclosures provided to clients or investors pursuant to § 275.206(4)-1(b)(1)(ii) and (iii)... (ii) Documentation substantiating the adviser's reasonable basis for believing that a testimonial or endorsement... complies with § 275.206(4)-1 and that the third-party rating... complies with § 275.206(4)-1(c)(1)... (16) All accounts, books, internal working papers, and any other records or documents that are necessary to form the basis for or demonstrate the calculation of any performance or rate of return... (19) A record of who the 'intended audience' is pursuant to § 275.206(4)-1(d)(6) and (e)(10)(ii)(B)."
+    }
+  },
+  "themes": [
+  
+{
+  "theme_id": "5",
+  "theme_name": "Digital & Distribution Controls",
+  "gate_reference": "Gate 4",
+  "sub_buckets": [
+    {
+      "name": "Incorrect or inappropriate audience classification or targeting",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(d)(6)(i)",
+      "verbatim_text": "Adopts and implements policies and procedures reasonably designed to ensure that the hypothetical performance is relevant to the likely financial situation and investment objectives of the intended audience of the advertisement.",
+      "logic_gate": "IF advertisement_contains_hypothetical_performance THEN (adviser_must_have_policies_procedures AND policies_must_ensure_relevance_to_intended_audience_financial_situation_and_objectives)",
+      "spirit_of_rule": "Advisers must ensure hypothetical performance is only shown to audiences with the financial expertise and resources to understand the inherent risks and limitations."
+    },
+    {
+      "name": "Unapproved digital or social-media distribution",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(e)(1)(ii)",
+      "verbatim_text": "Any endorsement or testimonial for which an investment adviser provides compensation, directly or indirectly, but does not include any information contained in a statutory or regulatory notice, filing, or other required communication",
+      "logic_gate": "IF communication_is_endorsement_or_testimonial AND adviser_provides_compensation (direct OR indirect) THEN communication_is_advertisement",
+      "spirit_of_rule": "Compensated endorsements, including those on social media or by third-party promoters, are considered advertisements and subject to regulatory oversight."
+    },
+    {
+      "name": "Improper use of interactive or real-time media",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(e)(8)(iv)(A)",
+      "verbatim_text": "An interactive analysis tool where a client or investor, or prospective client, or investor, uses the tool to produce simulations and statistical analyses... provided that the investment adviser: (1) Provides a description of the criteria and methodology used... (2) Explains that the results may vary... (3) Describes the universe of investments considered... (4) Discloses that the tool generates outcomes that are hypothetical in nature.",
+      "logic_gate": "IF using_interactive_analysis_tool THEN (provide_criteria_methodology_limitations AND explain_results_vary AND describe_investment_universe AND disclose_outcomes_are_hypothetical)",
+      "spirit_of_rule": "Interactive tools are exempt from hypothetical performance restrictions only if the user inputs data and the tool includes specific disclosures about its methodology and limitations."
+    },
+    {
+      "name": "Disclosure truncation or distortion in digital formats",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(b)(1)(i)",
+      "verbatim_text": "Clearly and prominently: (A) That the testimonial was given by a current client or investor... (B) That cash or non-cash compensation was provided... (C) A brief statement of any material conflicts of interest",
+      "logic_gate": "IF advertisement_contains_testimonial_or_endorsement THEN (disclosures_must_be_clear_and_prominent AND disclosures_must_be_within_advertisement_or_at_time_of_dissemination)",
+      "spirit_of_rule": "Key disclosures regarding status, compensation, and conflicts must be presented with at least equal prominence to the testimonial itself, preventing them from being buried in links or footnotes."
+    },
+    {
+      "name": "Improper linking, hashtags, redirects, or embedded content",
+      "regulatory_relevance": "Derived",
+      "citation": "206(4)-1(a)(4)",
+      "verbatim_text": "Discuss any potential benefits to clients or investors connected with or resulting from the investment adviser’s services or methods of operation without providing fair and balanced treatment of any material risks or material limitations associated with the potential benefits",
+      "logic_gate": "IF advertisement_discusses_benefits THEN (must_provide_fair_and_balanced_treatment_of_risks AND risk_disclosure_must_not_be_obscured_by_formatting_or_linking_structure)",
+      "spirit_of_rule": "While layered disclosure (linking) is permitted for detailed information, the initial presentation of benefits must be balanced with risks within the advertisement itself to avoid being misleading."
+    },
+    {
+      "name": "Missing or bypassed supervisory approval or monitoring",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(b)(2)",
+      "verbatim_text": "Adviser oversight and compliance. The investment adviser must have: (i) A reasonable basis for believing that the testimonial or endorsement complies with the requirements of this section, and (ii) A written agreement with any person giving a testimonial or endorsement that describes the scope of the agreed-upon activities and the terms of compensation",
+      "logic_gate": "IF using_testimonial_or_endorsement THEN (adviser_must_have_reasonable_basis_for_compliance) AND (IF compensation_exceeds_de_minimis THEN adviser_must_have_written_agreement)",
+      "spirit_of_rule": "Advisers must actively oversee promoters and maintain written agreements for compensated arrangements to ensure third-party communications comply with the rule."
+    },
+    {
+      "name": "Content reuse outside approved scope or context",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(d)(7)",
+      "verbatim_text": "Any predecessor performance unless: (i) The person or persons who were primarily responsible for achieving the prior performance results manage accounts at the advertising adviser; (ii) The accounts managed at the predecessor investment adviser are sufficiently similar... (iii) All accounts that were managed in a substantially similar manner are advertised... (iv) The advertisement clearly and prominently includes all relevant disclosures",
+      "logic_gate": "IF using_predecessor_performance THEN (personnel_primarily_responsible_must_be_at_new_firm AND accounts_must_be_sufficiently_similar AND all_similar_accounts_included AND relevant_disclosures_included)",
+      "spirit_of_rule": "Performance results from a prior firm can only be reused if the specific personnel responsible for those results are managing the accounts at the new firm and the accounts are similar."
+    },
+    {
+      "name": "Inadequate version control, recordkeeping, or archiving",
+      "regulatory_relevance": "Direct",
+      "citation": "204-2(a)(19)",
+      "verbatim_text": "A record of who the 'intended audience' is pursuant to § 275.206(4)-1(d)(6) and (e)(10)(ii)(B) of this chapter.",
+      "logic_gate": "IF hypothetical_performance_is_advertised THEN adviser_must_maintain_record_of_intended_audience",
+      "spirit_of_rule": "Advisers must document the specific audience intended for hypothetical performance advertisements to demonstrate compliance with the relevance requirement."
+    }
+  ]
+}
+  ]
+}
+
+
+

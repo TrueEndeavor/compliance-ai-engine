@@ -1,0 +1,118 @@
+
+{
+  "metadata": {
+    "standard": "Shared-Regulatory-Context-v1",
+    "document": "Investment Adviser Marketing Final Rule (IA-5653)",
+    "extraction_date": "2025-04-29"
+  },
+  "shared_context": {
+    "definitionOfCoveredActivity": {
+      "citation": "§ 275.206(4)-1(e)(1)",
+      "text": "Advertisement means: (i) Any direct or indirect communication an investment adviser makes to more than one person, or to one or more persons if the communication includes hypothetical performance, that offers the investment adviser's investment advisory services with regard to securities to prospective clients or investors in a private fund advised by the investment adviser or offers new investment advisory services with regard to securities to current clients or investors in a private fund advised by the investment adviser... (ii) Any endorsement or testimonial for which an investment adviser provides compensation, directly or indirectly, but does not include any information contained in a statutory or regulatory notice, filing, or other required communication, provided that such information is reasonably designed to satisfy the requirements of such notice, filing, or other required communication."
+    },
+    "globalProhibitionsOrStandards": {
+      "citation": "§ 275.206(4)-1(a)",
+      "items": [
+        "Include any untrue statement of a material fact, or omit to state a material fact necessary in order to make the statement made, in the light of the circumstances under which it was made, not misleading",
+        "Include a material statement of fact that the adviser does not have a reasonable basis for believing it will be able to substantiate upon demand by the Commission",
+        "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser",
+        "Discuss any potential benefits to clients or investors connected with or resulting from the investment adviser's services or methods of operation without providing fair and balanced treatment of any material risks or material limitations associated with the potential benefits",
+        "Include a reference to specific investment advice provided by the investment adviser where such investment advice is not presented in a manner that is fair and balanced",
+        "Include or exclude performance results, or present performance time periods, in a manner that is not fair and balanced",
+        "Otherwise be materially misleading"
+      ]
+    },
+    "scopeAndApplicabilityNotes": {
+      "citation": "§ 275.206(4)-1",
+      "text": "It is unlawful for any investment adviser registered or required to be registered under section 203 of the Act (15 U.S.C. 80b-3), directly or indirectly, to disseminate any advertisement that violates any of paragraphs (a) through (d) of this section. The definition of advertisement excludes: (A) Extemporaneous, live, oral communications; (B) Information contained in a statutory or regulatory notice, filing, or other required communication...; or (C) A communication that includes hypothetical performance that is provided: (1) In response to an unsolicited request... or (2) To a prospective or current investor in a private fund advised by the investment adviser in a one-on-one communication."
+    },
+    "recordkeepingOrDocumentationObligations": {
+      "citation": "§ 275.204-2(a)",
+      "text": "Books and records to be maintained by investment advisers: (7)(iv) Predecessor performance... and the performance or rate of return of any or all managed accounts, portfolios... or securities recommendations; (11)(i) A copy of each (A) Advertisement that the investment adviser disseminates, directly or indirectly... (15)(i) If not included in the advertisement, a record of the disclosures provided to clients or investors pursuant to § 275.206(4)-1(b)(1)(ii) and (iii)... (ii) Documentation substantiating the adviser's reasonable basis for believing that a testimonial or endorsement... complies with § 275.206(4)-1 and that the third-party rating... complies with § 275.206(4)-1(c)(1)... (16) All accounts, books, internal working papers, and any other records or documents that are necessary to form the basis for or demonstrate the calculation of any performance or rate of return... (19) A record of who the 'intended audience' is pursuant to § 275.206(4)-1(d)(6) and (e)(10)(ii)(B)."
+    }
+  },
+  "themes": [
+  {
+  "theme_id": "3",
+  "theme_name": "Inadequate, Missing, or Inconsistent Disclosures",
+  "gate_reference": "Gate 6",
+  "sub_buckets": [
+    {
+      "name": "Missing, outdated, or incorrect required disclosures",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(b)(1)",
+      "verbatim_text": "The investment adviser discloses, or reasonably believes that the person giving the testimonial or endorsement discloses, the following at the time the testimonial or endorsement is disseminated: (i) Clearly and prominently: (A) That the testimonial was given by a current client or investor... (B) That cash or non-cash compensation was provided... (C) A brief statement of any material conflicts of interest...",
+      "logic_gate": "IF (Ad_Contains_Testimonial OR Ad_Contains_Endorsement) THEN (Must_Disclose(Client_Status) AND Must_Disclose(Compensation) AND Must_Disclose(Conflicts))",
+      "spirit_of_rule": "Advisers must ensure clear disclosure of the promoter's status, compensation, and conflicts to prevent misleading investors regarding the objectivity of the statement."
+    },
+    {
+      "name": "Omission of material facts or required risk disclosures",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(a)(4)",
+      "verbatim_text": "Discuss any potential benefits to clients or investors connected with or resulting from the investment adviser’s services or methods of operation without providing fair and balanced treatment of any material risks or material limitations associated with the potential benefits;",
+      "logic_gate": "IF (Ad_Discusses_Potential_Benefits) THEN (Must_Provide_Fair_Balanced_Material_Risks_And_Limitations)",
+      "spirit_of_rule": "Advertisements must not cherry-pick benefits without presenting the corresponding material risks and limitations necessary for a fair evaluation."
+    },
+    {
+      "name": "Incorrect, incomplete, inconsistent, or inverted disclosure language",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(a)(3)",
+      "verbatim_text": "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser;",
+      "logic_gate": "IF (Information_Creates_Misleading_Inference) THEN (Prohibited)",
+      "spirit_of_rule": "Advisers must avoid presenting information in a way that, while technically true, leads the investor to draw an incorrect or misleading conclusion."
+    },
+    {
+      "name": "Incomplete, placeholder, or non-final disclosure text",
+      "regulatory_relevance": "Derived",
+      "citation": "206(4)-1(a)(2)",
+      "verbatim_text": "Include a material statement of fact that the adviser does not have a reasonable basis for believing it will be able to substantiate upon demand by the Commission;",
+      "logic_gate": "IF (Material_Statement_Of_Fact_Included) THEN (Must_Have_Reasonable_Basis_To_Substantiate)",
+      "spirit_of_rule": "Advisers must ensure all factual statements are final and verifiable at the time of dissemination, precluding the use of unverified placeholders."
+    },
+    {
+      "name": "Misleading or unsupported regulatory references",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(d)(3)",
+      "verbatim_text": "Any statement, express or implied, that the calculation or presentation of performance results in the advertisement has been approved or reviewed by the Commission.",
+      "logic_gate": "IF (Ad_Contains_Performance_Results) THEN (Prohibit_Statement(SEC_Approval_Or_Review))",
+      "spirit_of_rule": "Advisers are strictly prohibited from claiming or implying that the SEC has vetted or endorsed their performance calculations."
+    },
+    {
+      "name": "Missing or incomplete visual or tabular disclosures",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(d)(2)",
+      "verbatim_text": "Any performance results... unless the advertisement includes performance results of the same portfolio or composite aggregation for one-, five-, and ten-year periods, each presented with equal prominence and ending on a date that is no less recent than the most recent calendar year-end;",
+      "logic_gate": "IF (Ad_Contains_Performance AND NOT Private_Fund) THEN (Must_Include_1_5_10_Year_Periods AND Equal_Prominence)",
+      "spirit_of_rule": "Standardized time periods must be presented visually with equal prominence to prevent cherry-picking favorable timeframes."
+    },
+    {
+      "name": "Missing or unclear benchmark or index definitions",
+      "regulatory_relevance": "Derived",
+      "citation": "206(4)-1(a)(6)",
+      "verbatim_text": "Include or exclude performance results, or present performance time periods, in a manner that is not fair and balanced;",
+      "logic_gate": "IF (Performance_Presented) THEN (Presentation_Must_Be_Fair_And_Balanced)",
+      "spirit_of_rule": "Performance comparisons must provide sufficient context, such as clear benchmark definitions, to ensure the presentation is not misleading."
+    },
+    {
+      "name": "Disclosure placement or prominence deficiencies",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(d)(1)(i)",
+      "verbatim_text": "Any presentation of gross performance, unless the advertisement also presents net performance: (i) With at least equal prominence to, and in a format designed to facilitate comparison with, the gross performance;",
+      "logic_gate": "IF (Gross_Performance_Presented) THEN (Net_Performance_Must_Be_Equal_Prominence AND Facilitate_Comparison)",
+      "spirit_of_rule": "Net performance must be displayed as visibly as gross performance to ensure investors do not overlook the impact of fees."
+    },
+    {
+      "name": "Missing or inaccurate “as-of” dates for non-performance data",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(c)(2)(i)",
+      "verbatim_text": "Clearly and prominently discloses... (i) The date on which the rating was given and the period of time upon which the rating was based;",
+      "logic_gate": "IF (Third_Party_Rating_Used) THEN (Must_Disclose_Date_Given AND Period_Covered)",
+      "spirit_of_rule": "Third-party ratings must include specific dates to allow investors to assess the relevance and currency of the rating."
+    }
+  ]
+}
+  ]
+}
+
+
+
