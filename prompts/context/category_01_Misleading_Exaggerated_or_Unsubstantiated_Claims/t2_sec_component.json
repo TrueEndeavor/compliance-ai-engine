@@ -1,0 +1,120 @@
+{
+  "metadata": {
+    "standard": "Shared-Regulatory-Context-v1",
+    "document": "Investment Adviser Marketing Final Rule (IA-5653)",
+    "extraction_date": "2025-04-29"
+  },
+  "shared_context": {
+    "definitionOfCoveredActivity": {
+      "citation": "§ 275.206(4)-1(e)(1)",
+      "text": "Advertisement means: (i) Any direct or indirect communication an investment adviser makes to more than one person, or to one or more persons if the communication includes hypothetical performance, that offers the investment adviser’s investment advisory services with regard to securities to prospective clients or investors in a private fund advised by the investment adviser or offers new investment advisory services with regard to securities to current clients or investors in a private fund advised by the investment adviser... (ii) Any endorsement or testimonial for which an investment adviser provides compensation, directly or indirectly, but does not include any information contained in a statutory or regulatory notice, filing, or other required communication, provided that such information is reasonably designed to satisfy the requirements of such notice, filing, or other required communication."
+    },
+    "globalProhibitionsOrStandards": {
+      "citation": "§ 275.206(4)-1(a)",
+      "items": [
+        "Include any untrue statement of a material fact, or omit to state a material fact necessary in order to make the statement made, in the light of the circumstances under which it was made, not misleading",
+        "Include a material statement of fact that the adviser does not have a reasonable basis for believing it will be able to substantiate upon demand by the Commission",
+        "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser",
+        "Discuss any potential benefits to clients or investors connected with or resulting from the investment adviser’s services or methods of operation without providing fair and balanced treatment of any material risks or material limitations associated with the potential benefits",
+        "Include a reference to specific investment advice provided by the investment adviser where such investment advice is not presented in a manner that is fair and balanced",
+        "Include or exclude performance results, or present performance time periods, in a manner that is not fair and balanced",
+        "Otherwise be materially misleading"
+      ]
+    },
+    "scopeAndApplicabilityNotes": {
+      "citation": "§ 275.206(4)-1",
+      "text": "It is unlawful for any investment adviser registered or required to be registered under section 203 of the Act (15 U.S.C. 80b-3), directly or indirectly, to disseminate any advertisement that violates any of paragraphs (a) through (d) of this section. The definition of advertisement excludes: (A) Extemporaneous, live, oral communications; (B) Information contained in a statutory or regulatory notice, filing, or other required communication...; or (C) A communication that includes hypothetical performance that is provided: (1) In response to an unsolicited request... or (2) To a prospective or current investor in a private fund advised by the investment adviser in a one-on-one communication."
+    },
+    "recordkeepingOrDocumentationObligations": {
+      "citation": "§ 275.204-2(a)",
+      "text": "Books and records to be maintained by investment advisers: (7)(iv) Predecessor performance... and the performance or rate of return of any or all managed accounts, portfolios... or securities recommendations; (11)(i) A copy of each (A) Advertisement that the investment adviser disseminates, directly or indirectly... (15)(i) If not included in the advertisement, a record of the disclosures provided to clients or investors pursuant to § 275.206(4)-1(b)(1)(ii) and (iii)... (ii) Documentation substantiating the adviser’s reasonable basis for believing that a testimonial or endorsement... complies with § 275.206(4)-1 and that the third-party rating... complies with § 275.206(4)-1(c)(1)... (16) All accounts, books, internal working papers, and any other records or documents that are necessary to form the basis for or demonstrate the calculation of any performance or rate of return... (19) A record of who the 'intended audience' is pursuant to § 275.206(4)-1(d)(6) and (e)(10)(ii)(B)."
+    }
+  },
+  "theme": {
+    "theme_id": "1",
+    "theme_name": "Misleading, Exaggerated, or Unsubstantiated Claims",
+    "gate_reference": "Gate 6",
+    "sub_buckets": [
+      {
+        "name": "Unsubstantiated or inadequately supported statements of fact",
+        "regulatory_relevance": "Direct",
+        "citation": "206(4)-1(a)(2)",
+        "verbatim_text": "Include a material statement of fact that the adviser does not have a reasonable basis for believing it will be able to substantiate upon demand by the Commission;",
+        "logic_gate": "IF (Statement.Type == 'Material Fact') AND (Adviser.HasReasonableBasisToSubstantiate == FALSE) THEN Violation = TRUE",
+        "spirit_of_rule": "Advisers must be able to prove the truth of any material factual claims made in advertisements upon request."
+      },
+      {
+        "name": "Promissory or certain-outcome language implying guaranteed results",
+        "regulatory_relevance": "Derived",
+        "citation": "206(4)-1(a)(3)",
+        "verbatim_text": "we believe it may create a misleading implication [...] For instance, if an adviser were to state [...] that all of its clients have seen profits, even if true, without providing appropriate disclosures if it only has two clients, as it may be reasonably likely to cause a misleading inference by potential clients that they would have a high chance of profit by hiring the adviser as well.",
+        "logic_gate": "IF (Advertisement.Content IMPLIES 'Guaranteed Profit' OR 'Certain Outcome') AND (Adviser.Disclosure.Context == 'Insufficient') THEN Violation = TRUE",
+        "spirit_of_rule": "Advisers cannot use language or framing that implies guaranteed profits or outcomes, even if the individual statements are technically true, if they lead to misleading inferences."
+      },
+      {
+        "name": "Implied guarantees or certainty through framing, tone, or context",
+        "regulatory_relevance": "Direct",
+        "citation": "206(4)-1(a)(3)",
+        "verbatim_text": "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser;",
+        "logic_gate": "IF (Advertisement.Content.Implication == 'Untrue' OR Advertisement.Content.Inference == 'Misleading') AND (RelatesTo == 'Material Fact') THEN Violation = TRUE",
+        "spirit_of_rule": "Advertisements must not mislead investors through implications or inferences, ensuring the overall impression is truthful."
+      },
+      {
+        "name": "Overstated, absolute, or “best-in-class” claims lacking qualification",
+        "regulatory_relevance": "Derived",
+        "citation": "206(4)-1(a)(1)",
+        "verbatim_text": "Include any untrue statement of a material fact, or omit to state a material fact necessary in order to make the statement made, in the light of the circumstances under which it was made, not misleading;",
+        "logic_gate": "IF (Claim.Type == 'Absolute' OR Claim.Type == 'Overstated') AND (Claim.Qualification == 'Missing' OR Claim.Context == 'Misleading') THEN Violation = TRUE",
+        "spirit_of_rule": "Absolute or overstated claims must include necessary context or qualifications to prevent them from being misleading in light of the circumstances."
+      },
+      {
+        "name": "Unbalanced presentation of benefits without corresponding risks",
+        "regulatory_relevance": "Direct",
+        "citation": "206(4)-1(a)(4)",
+        "verbatim_text": "Discuss any potential benefits to clients or investors connected with or resulting from the investment adviser’s services or methods of operation without providing fair and balanced treatment of any material risks or material limitations associated with the potential benefits;",
+        "logic_gate": "IF (Advertisement.Discusses == 'Potential Benefits') AND (Advertisement.TreatmentOfRisks != 'Fair and Balanced') THEN Violation = TRUE",
+        "spirit_of_rule": "Advisers must not tout benefits without an equally prominent and fair discussion of the associated risks and limitations."
+      },
+      {
+        "name": "Exaggerated or amplified claims overstating capability or outcomes",
+        "regulatory_relevance": "Derived",
+        "citation": "206(4)-1(a)(3)",
+        "verbatim_text": "this provision will prohibit an adviser from making a series of statements in an advertisement that literally are true when read individually, but whose overall effect is reasonably likely to create an untrue or misleading inference or implication about the investment adviser.",
+        "logic_gate": "IF (Advertisement.OverallEffect == 'Misleading Inference') AND (Statements.IndividualTruth == TRUE) THEN Violation = TRUE",
+        "spirit_of_rule": "The cumulative effect of statements must not exaggerate capabilities or outcomes to the point of creating a misleading inference, even if individual facts are accurate."
+      },
+      {
+        "name": "Vague, ambiguous, or undefined claims preventing reasonable understanding",
+        "regulatory_relevance": "Derived",
+        "citation": "206(4)-1(a)(7)",
+        "verbatim_text": "Otherwise be materially misleading. [...] For example, if an adviser provided accurate disclosures, but presented them in an unreadable font, such an advertisement would be materially misleading and prohibited under this provision.",
+        "logic_gate": "IF (Advertisement.Presentation == 'Unreadable' OR Advertisement.Content == 'Vague') AND (Result == 'Materially Misleading') THEN Violation = TRUE",
+        "spirit_of_rule": "Advertisements must be presented clearly; obscuring information through vagueness or poor presentation (like unreadable fonts) constitutes a misleading practice."
+      },
+      {
+        "name": "Audience-inappropriate language creating misleading impressions",
+        "regulatory_relevance": "Derived",
+        "citation": "206(4)-1(a) (Preamble)",
+        "verbatim_text": "The nature of the audience to which the advertisement is directed is a key factor in determining how the general prohibitions should be applied. For instance, the amount and type of information that may need to be included in an advertisement directed at retail investors may differ from the information that may need to be included in an advertisement directed at sophisticated institutional investors.",
+        "logic_gate": "IF (Advertisement.ContentComplexity > Audience.SophisticationLevel) AND (Result == 'Misleading Impression') THEN Violation = TRUE",
+        "spirit_of_rule": "Advisers must tailor the depth and complexity of their advertising content to the financial sophistication of the intended audience to avoid misleading them."
+      },
+      {
+        "name": "Unfair, deceptive, or unclear communications causing potential harm",
+        "regulatory_relevance": "Direct",
+        "citation": "206(4)-1(a)(7)",
+        "verbatim_text": "Otherwise be materially misleading.",
+        "logic_gate": "IF (Advertisement.Content IS 'Materially Misleading') AND (NOT CoveredBy(206(4)-1(a)(1)..206(4)-1(a)(6))) THEN Violation = TRUE",
+        "spirit_of_rule": "This catch-all provision ensures that any materially misleading practice not explicitly covered by specific prohibitions is still disallowed."
+      },
+      {
+        "name": "ESG, impact, sustainability, or qualitative claims lacking definition or support",
+        "regulatory_relevance": "Derived",
+        "citation": "206(4)-1(a)(2)",
+        "verbatim_text": "limiting the substantiation requirement to matters of material fact rather than any material claim or statement. [...] material facts might include a statement that each of its portfolio managers holds a particular certification or that it offers a certain type or number of investment products.",
+        "logic_gate": "IF (Claim.Type == 'Qualitative' OR Claim.Topic == 'ESG') AND (Claim.IsMaterialFact == TRUE) AND (Adviser.HasReasonableBasisToSubstantiate == FALSE) THEN Violation = TRUE",
+        "spirit_of_rule": "Material qualitative claims, such as those regarding credentials or specific offering types (e.g., ESG), must be substantiated as facts, distinguishing them from pure opinion."
+      }
+    ]
+  }
+}
