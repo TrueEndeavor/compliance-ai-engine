@@ -1,0 +1,103 @@
+
+{
+  "metadata": {
+    "standard": "Shared-Regulatory-Context-v1",
+    "document": "Investment Adviser Marketing Final Rule (IA-5653)",
+    "extraction_date": "2025-04-29"
+  },
+  "shared_context": {
+    "definitionOfCoveredActivity": {
+      "citation": "§ 275.206(4)-1(e)(1)",
+      "text": "Advertisement means: (i) Any direct or indirect communication an investment adviser makes to more than one person, or to one or more persons if the communication includes hypothetical performance, that offers the investment adviser's investment advisory services with regard to securities to prospective clients or investors in a private fund advised by the investment adviser or offers new investment advisory services with regard to securities to current clients or investors in a private fund advised by the investment adviser... (ii) Any endorsement or testimonial for which an investment adviser provides compensation, directly or indirectly, but does not include any information contained in a statutory or regulatory notice, filing, or other required communication, provided that such information is reasonably designed to satisfy the requirements of such notice, filing, or other required communication."
+    },
+    "globalProhibitionsOrStandards": {
+      "citation": "§ 275.206(4)-1(a)",
+      "items": [
+        "Include any untrue statement of a material fact, or omit to state a material fact necessary in order to make the statement made, in the light of the circumstances under which it was made, not misleading",
+        "Include a material statement of fact that the adviser does not have a reasonable basis for believing it will be able to substantiate upon demand by the Commission",
+        "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser",
+        "Discuss any potential benefits to clients or investors connected with or resulting from the investment adviser's services or methods of operation without providing fair and balanced treatment of any material risks or material limitations associated with the potential benefits",
+        "Include a reference to specific investment advice provided by the investment adviser where such investment advice is not presented in a manner that is fair and balanced",
+        "Include or exclude performance results, or present performance time periods, in a manner that is not fair and balanced",
+        "Otherwise be materially misleading"
+      ]
+    },
+    "scopeAndApplicabilityNotes": {
+      "citation": "§ 275.206(4)-1",
+      "text": "It is unlawful for any investment adviser registered or required to be registered under section 203 of the Act (15 U.S.C. 80b-3), directly or indirectly, to disseminate any advertisement that violates any of paragraphs (a) through (d) of this section. The definition of advertisement excludes: (A) Extemporaneous, live, oral communications; (B) Information contained in a statutory or regulatory notice, filing, or other required communication...; or (C) A communication that includes hypothetical performance that is provided: (1) In response to an unsolicited request... or (2) To a prospective or current investor in a private fund advised by the investment adviser in a one-on-one communication."
+    },
+    "recordkeepingOrDocumentationObligations": {
+      "citation": "§ 275.204-2(a)",
+      "text": "Books and records to be maintained by investment advisers: (7)(iv) Predecessor performance... and the performance or rate of return of any or all managed accounts, portfolios... or securities recommendations; (11)(i) A copy of each (A) Advertisement that the investment adviser disseminates, directly or indirectly... (15)(i) If not included in the advertisement, a record of the disclosures provided to clients or investors pursuant to § 275.206(4)-1(b)(1)(ii) and (iii)... (ii) Documentation substantiating the adviser's reasonable basis for believing that a testimonial or endorsement... complies with § 275.206(4)-1 and that the third-party rating... complies with § 275.206(4)-1(c)(1)... (16) All accounts, books, internal working papers, and any other records or documents that are necessary to form the basis for or demonstrate the calculation of any performance or rate of return... (19) A record of who the 'intended audience' is pursuant to § 275.206(4)-1(d)(6) and (e)(10)(ii)(B)."
+    }
+  },
+  "themes": [
+  
+{
+  "theme_id": "7",
+  "theme_name": "Rankings, Ratings & Data Context",
+  "gate_reference": "Gate 2",
+  "sub_buckets": [
+    {
+      "name": "Unidentified or unclear ranking or data provider",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(c)(2)(ii)",
+      "verbatim_text": "The identity of the third party that created and tabulated the rating",
+      "logic_gate": "IF (Advertisement_Contains_ThirdPartyRating) THEN (Disclosure_Must_Include_Identity_Of_Creator_And_Tabulator)",
+      "spirit_of_rule": "Investors must be informed of the specific source of a rating to evaluate its credibility and independence."
+    },
+    {
+      "name": "Missing or unsupported methodology or selection criteria",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(c)(1)",
+      "verbatim_text": "Has a reasonable basis for believing that any questionnaire or survey used in the preparation of the third-party rating is structured to make it equally easy for a participant to provide favorable and unfavorable responses, and is not designed or prepared to produce any predetermined result",
+      "logic_gate": "IF (Advertisement_Contains_ThirdPartyRating) THEN (Adviser_Must_Have_Reasonable_Basis_Belief(Methodology_Is_Unbiased AND Methodology_Is_Not_Predetermined))",
+      "spirit_of_rule": "Advisers must conduct due diligence to ensure rating methodologies are not rigged to produce favorable results."
+    },
+    {
+      "name": "Missing or misleading evaluation period or “as-of” date",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(c)(2)(i)",
+      "verbatim_text": "The date on which the rating was given and the period of time upon which the rating was based",
+      "logic_gate": "IF (Advertisement_Contains_ThirdPartyRating) THEN (Disclosure_Must_Include(Date_Rating_Given AND Period_Rating_Based_On))",
+      "spirit_of_rule": "Temporal context is required to prevent the presentation of stale or irrelevant ratings as current."
+    },
+    {
+      "name": "Inability to validate underlying data or assumptions",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(a)(2)",
+      "verbatim_text": "Include a material statement of fact that the adviser does not have a reasonable basis for believing it will be able to substantiate upon demand by the Commission",
+      "logic_gate": "IF (Advertisement_Contains_Material_Statement_Of_Fact) THEN (Adviser_Must_Have_Reasonable_Basis_To_Substantiate_On_Demand)",
+      "spirit_of_rule": "Advisers must be able to prove the accuracy of material claims made in advertisements if challenged."
+    },
+    {
+      "name": "Paid or influenced rankings without disclosure",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(c)(2)(iii)",
+      "verbatim_text": "If applicable, that compensation has been provided directly or indirectly by the adviser in connection with obtaining or using the third-party rating",
+      "logic_gate": "IF (Advertisement_Contains_ThirdPartyRating AND (Compensation_Provided_Directly OR Compensation_Provided_Indirectly)) THEN (Disclosure_Must_State_Compensation_Provided)",
+      "spirit_of_rule": "Investors must be explicitly informed if a rating was purchased or influenced by compensation to assess potential conflicts of interest."
+    },
+    {
+      "name": "Selective or misleading presentation of rankings",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(a)(6)",
+      "verbatim_text": "Include or exclude performance results, or present performance time periods, in a manner that is not fair and balanced",
+      "logic_gate": "IF (Advertisement_Contains_Performance_Results) THEN (Presentation_Must_Be_Fair_And_Balanced AND NOT(Cherry_Picked_Time_Periods))",
+      "spirit_of_rule": "Data presentation must not be cherry-picked to favor the adviser but must provide a complete and fair picture."
+    },
+    {
+      "name": "Mischaracterization of ranking scope or universe",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(a)(3)",
+      "verbatim_text": "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser",
+      "logic_gate": "IF (Advertisement_Contains_Information) THEN (Information_Must_Not_Cause_Misleading_Inference_Regarding_Material_Fact)",
+      "spirit_of_rule": "Advertisements must not imply broader success or standing than is factually accurate regarding the adviser's material status."
+    }
+  ]
+}
+  ]
+}
+
+
+

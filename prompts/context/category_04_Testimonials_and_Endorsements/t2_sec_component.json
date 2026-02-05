@@ -1,0 +1,103 @@
+
+{
+  "metadata": {
+    "standard": "Shared-Regulatory-Context-v1",
+    "document": "Investment Adviser Marketing Final Rule (IA-5653)",
+    "extraction_date": "2025-04-29"
+  },
+  "shared_context": {
+    "definitionOfCoveredActivity": {
+      "citation": "§ 275.206(4)-1(e)(1)",
+      "text": "Advertisement means: (i) Any direct or indirect communication an investment adviser makes to more than one person, or to one or more persons if the communication includes hypothetical performance, that offers the investment adviser's investment advisory services with regard to securities to prospective clients or investors in a private fund advised by the investment adviser or offers new investment advisory services with regard to securities to current clients or investors in a private fund advised by the investment adviser... (ii) Any endorsement or testimonial for which an investment adviser provides compensation, directly or indirectly, but does not include any information contained in a statutory or regulatory notice, filing, or other required communication, provided that such information is reasonably designed to satisfy the requirements of such notice, filing, or other required communication."
+    },
+    "globalProhibitionsOrStandards": {
+      "citation": "§ 275.206(4)-1(a)",
+      "items": [
+        "Include any untrue statement of a material fact, or omit to state a material fact necessary in order to make the statement made, in the light of the circumstances under which it was made, not misleading",
+        "Include a material statement of fact that the adviser does not have a reasonable basis for believing it will be able to substantiate upon demand by the Commission",
+        "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser",
+        "Discuss any potential benefits to clients or investors connected with or resulting from the investment adviser's services or methods of operation without providing fair and balanced treatment of any material risks or material limitations associated with the potential benefits",
+        "Include a reference to specific investment advice provided by the investment adviser where such investment advice is not presented in a manner that is fair and balanced",
+        "Include or exclude performance results, or present performance time periods, in a manner that is not fair and balanced",
+        "Otherwise be materially misleading"
+      ]
+    },
+    "scopeAndApplicabilityNotes": {
+      "citation": "§ 275.206(4)-1",
+      "text": "It is unlawful for any investment adviser registered or required to be registered under section 203 of the Act (15 U.S.C. 80b-3), directly or indirectly, to disseminate any advertisement that violates any of paragraphs (a) through (d) of this section. The definition of advertisement excludes: (A) Extemporaneous, live, oral communications; (B) Information contained in a statutory or regulatory notice, filing, or other required communication...; or (C) A communication that includes hypothetical performance that is provided: (1) In response to an unsolicited request... or (2) To a prospective or current investor in a private fund advised by the investment adviser in a one-on-one communication."
+    },
+    "recordkeepingOrDocumentationObligations": {
+      "citation": "§ 275.204-2(a)",
+      "text": "Books and records to be maintained by investment advisers: (7)(iv) Predecessor performance... and the performance or rate of return of any or all managed accounts, portfolios... or securities recommendations; (11)(i) A copy of each (A) Advertisement that the investment adviser disseminates, directly or indirectly... (15)(i) If not included in the advertisement, a record of the disclosures provided to clients or investors pursuant to § 275.206(4)-1(b)(1)(ii) and (iii)... (ii) Documentation substantiating the adviser's reasonable basis for believing that a testimonial or endorsement... complies with § 275.206(4)-1 and that the third-party rating... complies with § 275.206(4)-1(c)(1)... (16) All accounts, books, internal working papers, and any other records or documents that are necessary to form the basis for or demonstrate the calculation of any performance or rate of return... (19) A record of who the 'intended audience' is pursuant to § 275.206(4)-1(d)(6) and (e)(10)(ii)(B)."
+    }
+  },
+  "themes": [
+  
+{
+  "theme_id": "4",
+  "theme_name": "Testimonials & Endorsements",
+  "gate_reference": "Gate 3",
+  "sub_buckets": [
+    {
+      "name": "Missing or incorrect required testimonial disclosures",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(b)(1)(i)",
+      "verbatim_text": "The investment adviser discloses, or reasonably believes that the person giving the testimonial or endorsement discloses, the following at the time the testimonial or endorsement is disseminated: (i) Clearly and prominently: (A) That the testimonial was given by a current client or investor, and the endorsement was given by a person other than a current client or investor, as applicable; (B) That cash or non-cash compensation was provided for the testimonial or endorsement, if applicable; and (C) A brief statement of any material conflicts of interest on the part of the person giving the testimonial or endorsement resulting from the investment adviser’s relationship with such person;",
+      "logic_gate": "IF (Communication IS Testimonial OR Communication IS Endorsement) AND (Disclosure_ClientStatus IS Missing OR Disclosure_Compensation IS Missing OR Disclosure_Conflicts IS Missing) THEN Flag_Violation",
+      "spirit_of_rule": "Investors must be immediately provided with clear and prominent disclosures regarding the promoter's status, compensation, and conflicts to properly evaluate the credibility of the statement."
+    },
+    {
+      "name": "Undisclosed compensation or material relationships",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(b)(1)(ii)-(iii)",
+      "verbatim_text": "(ii) The material terms of any compensation arrangement, including a description of the compensation provided or to be provided, directly or indirectly, to the person for the testimonial or endorsement; and (iii) A description of any material conflicts of interest on the part of the person giving the testimonial or endorsement resulting from the investment adviser’s relationship with such person and/or any compensation arrangement.",
+      "logic_gate": "IF (Compensation_Provided IS True) AND (Disclosure_CompensationTerms IS Missing OR Disclosure_MaterialConflicts IS Missing) THEN Flag_Violation",
+      "spirit_of_rule": "Advisers must provide detailed transparency regarding the specific financial incentives and relationship dynamics that might bias a promoter's recommendation."
+    },
+    {
+      "name": "Testimonials implying guarantees or typical results",
+      "regulatory_relevance": "Derived",
+      "citation": "206(4)-1(a)(3)",
+      "verbatim_text": "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser;",
+      "logic_gate": "IF Testimonial_Content IMPLIES (Guaranteed_Result OR Typical_Result_Without_Context) THEN Flag_Violation",
+      "spirit_of_rule": "Advertisements must not imply that a specific client's positive experience is representative of what all clients will achieve or that investment results are guaranteed."
+    },
+    {
+      "name": "Selective or misleading use of testimonials",
+      "regulatory_relevance": "Derived",
+      "citation": "206(4)-1(a)(4)",
+      "verbatim_text": "Discuss any potential benefits to clients or investors connected with or resulting from the investment adviser’s services or methods of operation without providing fair and balanced treatment of any material risks or material limitations associated with the potential benefits;",
+      "logic_gate": "IF (Testimonial_Selection IS CherryPicked) OR (Fair_Balanced_Treatment IS False) THEN Flag_Violation",
+      "spirit_of_rule": "Advisers cannot present a skewed view of their services by highlighting only favorable feedback while omitting material risks or limitations necessary for a fair and balanced presentation."
+    },
+    {
+      "name": "Influencer or social-media endorsements without disclosure",
+      "regulatory_relevance": "Direct",
+      "citation": "206(4)-1(e)(5)",
+      "verbatim_text": "Endorsement means any statement by a person other than a current client or investor in a private fund advised by the investment adviser that: (i) Indicates approval, support, or recommendation of the investment adviser... (ii) Directly or indirectly solicits any current or prospective client... or (iii) Refers any current or prospective client...",
+      "logic_gate": "IF (SocialMedia_Post IS Endorsement) AND (Required_Disclosures_ClearAndProminent ARE Missing) THEN Flag_Violation",
+      "spirit_of_rule": "Social media influencers and digital promoters are subject to the same transparency standards as traditional solicitors regarding compensation and status disclosures."
+    },
+    {
+      "name": "Third-party statements implying firm authorship",
+      "regulatory_relevance": "Derived",
+      "citation": "206(4)-1(a)(1)",
+      "verbatim_text": "Include any untrue statement of a material fact, or omit to state a material fact necessary in order to make the statement made, in the light of the circumstances under which it was made, not misleading;",
+      "logic_gate": "IF (ThirdParty_Content IS Adopted_By_Firm) AND (Content_Attribution IS Misleading) THEN Flag_Violation",
+      "spirit_of_rule": "Advisers are liable for third-party content they involve themselves in preparing or explicitly endorse if the presentation misleads investors about the source or independence of the information."
+    },
+    {
+      "name": "Outdated or no-longer-representative testimonials",
+      "regulatory_relevance": "Derived",
+      "citation": "206(4)-1(a)(3)",
+      "verbatim_text": "Include information that would reasonably be likely to cause an untrue or misleading implication or inference to be drawn concerning a material fact relating to the investment adviser;",
+      "logic_gate": "IF (Testimonial_Source IS Former_Client) AND (Current_Relevance IS False) AND (Context_Disclosure IS Missing) THEN Flag_Violation",
+      "spirit_of_rule": "Using stale testimonials from former clients without disclosing their former status or the passage of time can create a misleading inference about the adviser's current service quality."
+    }
+  ]
+}
+  ]
+}
+
+
+
