@@ -1,6 +1,7 @@
+0 Sub-buckets, logic structured as 10X5 = 50 mini sub-buckets
 Prompt for Category 1 – Misleading, Exaggerated, or Unsubstantiated Claims
 Gate 6 – Claims/Comparisons/Disclosures (Cat 1, Cat 3, Cat 6)
-Version: v1.3 – 2026-02-03 (CCO Sub-Bucket Expansion)
+Version: v1.3 – 2026-02-03 (Sub-Bucket Expansion)
 
 ==========================
 RULE CONTEXT (4-Tier Hierarchy)
@@ -55,7 +56,7 @@ Identify statements of fact, comparison, or superiority that lack adequate data,
 Purpose: Detect factual assertions presented as true without citation, data, or source.
 
 Detection Question:
-Does the content assert a factual claim, ranking, or superlative without identifying supporting data, source, or methodology? Consider whether the claim could be objectively verified but no evidence is provided.
+Does the content assert objective dominance, ranking, or status (e.g., best, top, most trusted, market leader) as fact, without identifying a defined universe, timeframe, data source, or methodology?
 
 Examples to flag:
 • "The best firm for producing top results."
@@ -64,10 +65,10 @@ Examples to flag:
 • "The most trusted investment provider."
 
 --- Prompt Set B: Performance or Outcome Claims Without Evidence ---
-Purpose: Capture claims of success or effectiveness lacking substantiation.
+Purpose: Capture claims of realized or demonstrable results, not goals.
 
 Detection Question:
-Does the statement assert performance, effectiveness, or outcomes without providing supporting performance data or explanation? Consider whether the claim implies a factual result that requires evidence.
+Does the statement assert actual performance, effectiveness, or outcomes (past or present) that would reasonably require performance data, results, or analysis, but none is provided?
 
 Examples to flag:
 • "Proven to outperform over time."
@@ -75,11 +76,15 @@ Examples to flag:
 • "Demonstrated superior performance."
 • "Track record of excellence."
 
+Out of scope: "Seeks to," "aims to," "designed to"
 --- Prompt Set C: Comparative Claims Without Identified Comparator ---
-Purpose: Identify comparisons that lack context or reference points.
+Purpose: Flag comparisons that cannot be evaluated.
 
 Detection Question:
-Does the content compare the firm, product, or strategy to others without identifying the comparator, universe, or basis for comparison? Consider whether the comparison can be evaluated as true or false.
+Does the statement compare performance, quality, or effectiveness relative to others, without identifying who/what the comparator is, the comparison universe, or the basis of comparison.
+
+Important Guardrail: If the comparator exists elsewhere and is clearly linked, do not flag.
+
 
 Examples to flag:
 • "Outperforms peers."
@@ -88,10 +93,13 @@ Examples to flag:
 • "Superior to competing strategies."
 
 --- Prompt Set D: Quantitative-Sounding Claims Without Metrics ---
-Purpose: Detect numerical or quasi-quantitative assertions without metrics.
+Purpose: Capture measurement-implying language, not vague adjectives.
 
 Detection Question:
-Does the statement use quantitative or data-like language without specifying metrics, inputs, or calculation methodology? Consider whether the language suggests measurement without measurement.
+Does the statement use language that implies measurement, optimization, or magnitude, where a reasonable reader would expect defined metrics or calculations, but none are provided?
+
+Key Filter: If the phrase sounds measurable, sub-bucket 1 may apply. If it is purely qualitative without measurement implication, defer to sub-bucket 7 only if material.
+
 
 Examples to flag:
 • "Delivers meaningful alpha."
@@ -103,7 +111,8 @@ Examples to flag:
 Purpose: Capture claims that gesture toward evidence without providing it.
 
 Detection Question:
-Does the content reference proof, validation, or analysis without identifying the source or nature of that support? Consider whether the proof is implied but not demonstrated.
+Does the statement reference research, data, studies, or analysis as proof, without identifying the source, scope, or nature of that support?
+
 
 Examples to flag:
 • "Research shows…"
@@ -111,20 +120,49 @@ Examples to flag:
 • "Studies demonstrate…"
 • "Analysis indicates…"
 
-Verification Instruction (Critical Guardrail):
-Before classifying under Sub-Bucket 1, verify whether the same sentence, paragraph, chart, table, or associated footnotes (marked by asterisks, numbers, or other symbols) provide:
-• Supporting data
-• Identified source
-• Ranking methodology
-• Performance calculations or assumptions
-Footnotes may appear directly underneath, in adjacent sections, or on back pages/last page of the document. Determine if footnotes are missing or inadequate.
-If adequate support is present and clear, do not classify under Sub-Bucket 1.
+VERIFICATION INSTRUCTION (NOISE-REDUCING VERSION)
+
+Before classifying under sub-bucket 1, affirmatively check whether the claim is supported by:
+• Data, figures, or tables
+• Clearly identified sources
+• Defined rankings or universes
+• Methodology descriptions
+• Footnotes or endnotes that are:
+• proximate,
+• readable, and
+• substantively responsive to the claim
+
+If support exists and is adequate → DO NOT FLAG.
+
+If support exists but does not actually substantiate the claim → sub-bucket 1 still applies.
 
 Non-Trigger Clarifier (Guardrail):
-Do not classify statements as unsubstantiated where claims are:
-• Clearly framed as opinion (e.g., "we believe," "in our view"), and
-• Not presented as objectively verifiable facts
-Opinion language becomes in-scope if framed as fact or superiority.
+Do not classify under Sub-Bucket 1 where statements are:
+• Clearly framed as opinion, belief, or philosophy
+• Aspirational or goal-oriented ("seeks," "aims," "designed to")
+• General positioning language without implied measurement or comparison
+
+Opinion becomes in-scope only when framed as fact or superiority.
+
+Do NOT flag under Sub-Bucket 1:
+• "providing stability and leadership"
+• "deep, broad perspectives"
+• "disciplined investment approach"
+• "experienced management team"
+Unless the statement is explicitly tied to:
+(a) performance outcomes,
+(b) superiority claims, or
+(c) quantitative results.
+
+Additional Guardrails:
+Do not classify statements as unsubstantiated where claims, terms, or phrases are:
+• Clearly framed in the context of the objective of fund or investment strategy (e.g., "we seek to mitigate risk," "we seek to anticipate," "we look to")
+• Clearly framed in the context of describing the author's organizational scale, infrastructure, or internal capabilities (e.g., "our extensive size and scale benefits our clients," "considerable value")
+• Otherwise considered superlative but permissible when, in the surrounding text, the author is explaining robustness and/or sophistication of their firm's capabilities without asserting that these capabilities outperform peers, meet a defined external benchmark, or deliver guaranteed results (e.g., "our firm has implemented world-class risk management systems to add value to our investment process," "our world-class investment philosophy")
+• Clearly framed as qualitative descriptor of process or explanatory descriptor, not as a quantified or outcome-based claim or guaranteed client benefit (e.g., "add considerable value," "add significant value")
+
+Note: Superlatives like "world-class" are permissible in context when supported by surrounding explanation. However, if stated as a standalone material fact without backup, flag as unsubstantiated.
+
 
 Boundary Reminder:
 If the issue is lack of substantiation, classify here.
@@ -133,10 +171,14 @@ If the issue is certainty, exaggeration, or misleading framing, classify under S
 ==========================
 SUB-BUCKET 2: Promissory or Certain-Outcome Language
 ==========================
-(Implying guaranteed results, e.g., "will," "ensures," "cannot fail")
+(Explicit or functionally explicit guarantees of future results)
+
+Sub-bucket 2 captures statements that present future investment outcomes as certain, inevitable, or assured — rather than conditional, probabilistic, or subject to risk — regardless of disclosures elsewhere.
+
 
 Core Detection Prompt (Primary):
-Identify statements that promise, ensure, or imply a certain investment outcome, remove or materially minimize uncertainty, or present future results as assured rather than conditional or probabilistic.
+Primary Test:
+Identify statements that affirmatively convert future outcomes into certainty, by using language, structure, or framing that eliminates or materially neutralizes uncertainty, such that a reasonable investor would understand the result as assured rather than possible.
 
 --- Prompt Set A: Explicit Certainty Verbs ---
 Purpose: Detect language that asserts inevitability or assurance, even without the word "guarantee."
@@ -186,7 +228,7 @@ Examples to flag:
 • "A dependable source of long-term growth."
 
 --- Prompt Set E: Certainty Masked as Design Intent ---
-Purpose: Capture outcomes implied through design, construction, or engineering language.
+Purpose: Prevent intent language from implying guaranteed results.
 
 Detection Question:
 Does the content describe goals, design, or intent in a way that implies the outcome will in fact occur? Consider whether intent language is used as a proxy for certainty.
@@ -199,15 +241,37 @@ Examples to flag:
 (Still promissory if not clearly qualified or supported.)
 
 Non-Trigger Clarifier (Guardrail):
-Do not classify statements as promissory solely because they describe objectives, goals, or intentions when clearly framed as aspirational, conditional, or probabilistic, such as:
+Do not classify under Sub-Bucket 2 where statements are:
+• Clearly aspirational or goal-oriented
+• Expressly conditional or probabilistic
+• Limited to process description without outcome certainty
+• Forward-looking but appropriately hedged
+
+Permissible examples (NOT Sub-Bucket 2):
 • "Seeks to outperform"
-• "Aims to generate"
+• "Aims to generate long-term growth"
 • "May help reduce volatility"
 • "Intended to provide diversification benefits"
+
+Do NOT flag under Sub-Bucket 2:
+• "Designed to seek long-term growth"
+• "A disciplined investment process"
+• "Focused on managing risk"
+• "Built with risk management in mind"
+Unless the language removes uncertainty or presents outcomes as inevitable.
+
+
 Aspirational language is permissible where uncertainty, assumptions, or risk are clearly conveyed and outcomes are not presented as assured.
 
 Verification Instruction:
-Check if statement still contains qualifiers like "may", "might", "could", "potentially", "subject to risk". If adequate hedging is present, do not classify here.
+Before classifying under Sub-Bucket 2, confirm whether the same sentence contains meaningful hedging such as:
+• "may," "might," "could," "potentially"
+• "subject to risk," "depending on market conditions"
+• "no guarantee," "there is no assurance"
+
+If hedging is present and not contradicted → DO NOT FLAG under Sub-Bucket 2.
+
+Hedging elsewhere does not cure Sub-Bucket 2 if the claim itself conveys certainty.
 
 Reviewer/Agent Resolution Instruction:
 If future outcomes are presented as certain, assured, or inevitable — rather than conditional or probabilistic — classify under Sub-Bucket 2, even if accompanied by disclosures. Disclosures do not neutralize promissory language where the statement itself conveys certainty or inevitability.
@@ -238,9 +302,44 @@ Detection Question:
 Does the content present benefits, strengths, or outcomes without corresponding discussion of limitations, risks, or variability where balance is necessary to avoid a misleading impression? Consider whether omission creates a false sense of certainty.
 
 Examples to flag:
-• Highlighting returns or success stories without mentioning variability
+
+Highlighting returns or success stories without mentioning variability
 • Describing downside protection without acknowledging limits
 • Presenting upside scenarios with no contextual risk framing
+Example 1: “Downside Protection” Without Limits
+
+Example 1: “Downside Protection” Without Limits
+🚩 Marketing Copy 
+
+“Our strategy provides downside protection during market volatility, helping investors stay invested with confidence.”
+⸻
+Example 2: Upside-Only Narrative Flow
+
+🚩 Marketing Copy 
+
+Headline: Positioned for Growth in Any Market Environment
+
+Through disciplined portfolio construction and active risk management, the strategy captures opportunities across market cycles while delivering consistent results.
+⸻
+Example 3: Success Story Without Variability Context
+
+🚩 Marketing Copy 
+
+“During periods of market stress, our disciplined approach helped clients preserve capital and remain invested.”
+⸻
+Example 4: Chart + Narrative = Implied Certainty
+
+🚩 Marketing Copy 
+
+(Chart shows only positive rolling returns)
+
+“The strategy has delivered positive outcomes across multiple environments, demonstrating its resilience over time.”
+⸻
+Example 5: “Protection” Framed as a Feature, Not a Tradeoff
+
+🚩 Marketing Copy 
+
+“Our approach protects portfolios from downside risk while maintaining upside participation.”
 
 --- Prompt Set C: Tone That Conveys Assurance or Inevitability ---
 Purpose: Identify certainty conveyed through confident, declarative, or absolute tone.
@@ -289,6 +388,15 @@ Do not classify content solely because it:
 • Highlights strengths or philosophy when appropriately balanced, contextualized, and not presented as inevitable outcomes
 Confidence alone is not certainty.
 
+Superlative words can be okay when:
+• They are used to describe how something is designed or intended to work, not to claim it is better than others.
+• They are descriptive, not comparative — meaning they do not:
+  • rank against peers,
+  • compare to competitors, or
+  • promise specific or guaranteed results.
+When superlative language is used this way, it may be treated as descriptive context, not as a misleading claim.
+
+
 Reviewer/Agent Resolution Instruction:
 If certainty or guaranteed outcomes are implied through framing, tone, emphasis, or omission, such that a reasonable investor could infer inevitability or risk-free results, classify under Sub-Bucket 3, even absent explicit promissory language. Disclosures that are technically present but overwhelmed by framing or emphasis do not cure the misleading impression.
 
@@ -306,10 +414,13 @@ Core Detection Prompt (Primary):
 Identify statements that use absolute, superlative, or "best-in-class" type language to assert superiority, quality, or outcomes without appropriate qualification, definition, comparison basis, or evidentiary support.
 
 --- Prompt Set A: Absolute or Superlative Language ---
-Purpose: Detect use of absolute terms that imply superiority or perfection.
+Purpose: Detect unqualified absolutes, not marketing enthusiasm.
 
 Detection Question:
-Does the content use absolute or superlative words that assert dominance, perfection, or exceptionality without qualification? Consider whether the claim leaves no reasonable room for limitation, exception, or variability.
+Does the statement use absolute or superlative terms (e.g., best, unmatched, premier, world-class, only) that assert superiority without qualification, limitation, or context?
+
+Key Guardrail:
+If the absolute is clearly subjective (“we believe we offer best-in-class service”), sub-bucket 4 does not apply unless framed as fact.
 
 Examples to flag:
 • "The best investment solution available."
@@ -330,10 +441,11 @@ Examples to flag:
 • "A premier asset manager."
 
 --- Prompt Set C: Superiority Claims Without Comparative Basis ---
-Purpose: Identify claims of being better, stronger, or superior without context.
+Purpose: Flag "better than what?" claims.
+
 
 Detection Question:
-Does the content assert superiority without identifying what it is being compared against or why the comparison is valid? Consider whether "better" is asserted without a benchmark.
+Does the content assert superiority (better, stronger, superior, more effective) without identifying what it is superior to or on what basis?
 
 Examples to flag:
 • "Superior results."
@@ -342,10 +454,10 @@ Examples to flag:
 • "More effective strategies."
 
 --- Prompt Set D: Absolutes Embedded in Descriptive Language ---
-Purpose: Capture absolute claims disguised as descriptive or qualitative statements.
+Purpose: Detect hidden absolutes, not adjectives.
 
 Detection Question:
-Does descriptive language embed absolutes or superlatives that elevate the claim beyond opinion into implied fact? Consider whether tone converts opinion into assertion.
+Does descriptive or qualitative language embed implicit superiority that elevates opinion into assertion?
 
 Examples to flag:
 • "World-class performance."
@@ -354,7 +466,8 @@ Examples to flag:
 • "Best-of-breed risk controls."
 
 --- Prompt Set E: Cumulative Overstatement Across Statements ---
-Purpose: Detect overstated impressions created through aggregation.
+Purpose: Capture superiority created by aggregation, not single words.
+
 
 Detection Question:
 Does the cumulative effect of multiple statements create an absolute or "best-in-class" impression even if no single statement does so alone? Consider headline + subhead + bullets together.
@@ -378,6 +491,13 @@ Do not classify statements that are:
 • Not presented as objectively verifiable superiority
 Opinion becomes in-scope when framed as fact or dominance.
 
+Do NOT flag under Sub-Bucket 4:
+• "We believe our approach is differentiated"
+• "Designed to deliver high-quality solutions"
+• "Focused on excellence in execution"
+• "Committed to strong risk management"
+Unless the language asserts objective superiority or dominance.
+
 Reviewer/Agent Resolution Instruction:
 If absolute, superlative, or "best-in-class" language asserts superiority without appropriate qualification, definition, or evidentiary basis, classify under Sub-Bucket 4. Disclosures that do not meaningfully qualify or define the claim do not cure the overstatement.
 
@@ -399,7 +519,10 @@ Identify statements that emphasize benefits, advantages, or favorable outcomes w
 Purpose: Detect benefit-focused statements lacking proximate balancing language.
 
 Detection Question:
-Does the content highlight benefits or favorable characteristics without corresponding discussion of material risks, limitations, or conditions in the same section or immediate context? Consider proximity — risks disclosed elsewhere may not cure imbalance.
+Does the content highlight benefits or favorable characteristics without corresponding disclosure of material risks or limitations in the same section or immediate context?
+
+Key Guardrail:
+Risks disclosed elsewhere may cure Sub-Bucket 5 only if clearly linked and reasonably proximate.
 
 Examples to flag:
 • "A very beneficial strategy" with no nearby risk discussion
@@ -410,7 +533,7 @@ Examples to flag:
 Purpose: Capture imbalance created by disproportionate emphasis.
 
 Detection Question:
-Does the content devote significant emphasis to upside, benefits, or success while minimizing, obscuring, or omitting downside considerations? Consider whether the overall tone favors benefits in a way that overwhelms caution.
+Would a reasonable investor notice the upside more than the downside?
 
 Examples to flag:
 • Multiple benefit bullets with a single buried risk footnote
@@ -427,6 +550,28 @@ Examples to flag:
 • "Reduces downside risk" without explaining scenarios where it may not
 • "Provides protection in volatile markets" without limits
 • "Lower risk approach" without defining risk metrics
+
+Detailed Examples to Flag:
+
+Example 1 — Upside Emphasized, Risk Acknowledged Only Abstractly:
+"The strategy offers enhanced return potential through active security selection and dynamic portfolio construction."
+
+Example 2 — Risk Reduction Without Tradeoffs:
+"Our disciplined investment process reduces portfolio risk while pursuing long-term growth."
+
+Example 3 — Diversification Benefits Without Limits:
+"The portfolio provides diversification benefits that can help smooth returns over time."
+
+Example 4 — Volatility Framed as Purely Positive:
+"By managing volatility, the strategy helps create a more stable investment experience for clients."
+
+Example 5 — Upside-Heavy Bullet List, Minimal Risk Context:
+"Key Benefits:
+• Access to growth opportunities
+• Active risk management
+• Flexible portfolio construction
+• Long-term return potential"
+(Risk disclosure appears on last page in small font)
 
 --- Prompt Set D: Benefits Stated as General Truths Without Context ---
 Purpose: Capture benefit statements presented as broadly applicable facts.
@@ -521,6 +666,9 @@ Purpose: Capture exaggeration created by aggregation.
 Detection Question:
 Does the combined effect of multiple statements materially overstate capability or outcomes, even if each statement individually appears reasonable? Consider headlines, summaries, bullets, and supporting text together.
 
+Key Guardrail:
+Aggregation must change the overall impression, not just add emphasis.
+
 Examples to flag:
 • Headline asserts leadership, body text asserts superiority, conclusion implies inevitability
 • Multiple moderate claims stacking into an exaggerated impression
@@ -536,6 +684,11 @@ Examples to flag:
 • Removing time-bound qualifiers ("to date," "initially")
 • Eliminating scope limits ("in select cases," "under certain conditions")
 • Broadening audience applicability without support
+• Example 1 — Version Drift (Qualifier Removed):
+Earlier draft: "The strategy may play a role in improving risk-adjusted returns."
+Marketing copy: "The strategy has delivered strong results, positioning it as an exceptional solution for today's markets."
+• Example 2 — Moderate Claim → Exceptional Outcome:
+"The strategy has delivered strong results, positioning it as an exceptional solution for today's markets."
 
 Verification Instruction (Critical Guardrail):
 Before classifying under this sub-bucket, confirm whether:
@@ -548,6 +701,12 @@ Do not classify statements solely because:
 • Language is polished or marketing-oriented, or
 • Isolated statements are slightly stronger but still supported
 This sub-bucket applies only where exaggeration is material, not stylistic.
+
+Do NOT flag under Sub-Bucket 6:
+• "The strategy has evolved over time"
+• "We continue to refine our process"
+• "Early feedback has been positive"
+Unless the language materially overstates maturity, scope, or outcomes.
 
 Reviewer/Agent Resolution Instruction:
 If claims about capability, experience, or outcomes are materially exaggerated or amplified — whether within a single statement or cumulatively across statements — such that a reasonable investor could overestimate what is accurate or supportable, classify under Sub-Bucket 6. Exaggeration that emerges through aggregation, escalation, or qualifier removal is in scope, even if no single statement is independently false.
@@ -595,6 +754,8 @@ Examples to flag:
 --- Prompt Set C: Ambiguous Comparators or Peer References ---
 Purpose: Identify comparisons that lack a defined universe or reference group.
 
+Key Test: If the content makes a comparative claim, can you identify WHAT it is being compared to? If not, flag it.
+
 Detection Question:
 Does the content compare performance, quality, or positioning without defining the comparator or peer group? Consider whether "relative to what" is unanswered.
 
@@ -620,13 +781,18 @@ Examples to flag:
 Purpose: Capture language that sounds meaningful but conveys little information.
 
 Detection Question:
-Does the statement rely on broad, aspirational, or marketing-oriented language without substantive explanatory content? Consider whether the language creates impression without clarity.
+Does the statement rely on aspirational or marketing-oriented language that sounds substantive but conveys no concrete information, where that lack of clarity affects understanding of a material claim?
 
 Examples to flag:
 • "Best-of-breed capabilities"
 • "Next-generation investment solutions"
 • "Holistic portfolio approach"
 • "Institutional-quality outcomes"
+
+DO NOT FLAG (Important Contrast):
+• "Providing stability and leadership through changing market environments." (Values/Positioning)
+• "We bring deep, broad perspectives to global fixed income investing." (High-Level Philosophy)
+• "Focused on delivering long-term value for clients." (Aspirational Intent)
 
 Verification Instruction (Critical Guardrail):
 Before classifying under this sub-bucket, confirm whether:
@@ -639,6 +805,12 @@ Do not classify statements solely because:
 • They use high-level language in introductory or branding sections, or
 • Detail is provided elsewhere and clearly linked to the claim
 Vagueness must be material to investor understanding, not merely stylistic.
+
+Do not flag a statement just because it sounds descriptive or high-level if:
+• The statement is explained by nearby facts that show what it actually means.
+• The language is descriptive, not comparative (not claiming to be better than others or promising specific results).
+• Descriptive words are backed up by adjacent facts, acting as a summary of real information — not a vague claim on its own.
+
 
 Reviewer/Agent Resolution Instruction:
 If a claim relies on vague, ambiguous, or undefined terms such that a reasonable investor cannot understand its meaning, scope, or basis, classify under Sub-Bucket 7. Lack of clarity that impairs understanding constitutes a misleading impression even absent falsity or exaggeration.
@@ -658,7 +830,7 @@ SUB-BUCKET 8: Audience-Inappropriate Language or Complexity
 (Creating a misleading impression, e.g., institutional framing for retail audiences, or simplified claims masking risk)
 
 Core Detection Prompt (Primary):
-Identify statements where language, framing, or level of complexity is inappropriate for the intended audience, such that it could mislead by overstating understanding, minimizing risk, or obscuring material limitations.
+Identify statements where the level of sophistication, terminology, framing, or implied assumptions exceed or mismatch the intended audience’s reasonable understanding, thereby obscuring risk, overstating accessibility, or minimizing complexity.
 
 --- Prompt Set A: Institutional or Technical Framing for Retail Audiences ---
 Purpose: Detect sophisticated or insider language presented without necessary explanation.
@@ -835,7 +1007,7 @@ SUB-BUCKET 10: ESG, Impact, Sustainability, or Qualitative Claims
 (Lacking clear definitions, scope, or evidentiary support)
 
 Core Detection Prompt (Primary):
-Identify ESG, impact, sustainability, or other qualitative claims that lack clear definitions, scope, criteria, methodology, or evidentiary support, such that a reasonable investor cannot understand what is being claimed or how it is substantiated.
+Identify ESG, sustainability, or impact claims where the meaning, scope, methodology, or outcomes are unclear or unsupported, such that the claim could reasonably be misunderstood or overstated by an investor.
 
 --- Prompt Set A: Undefined ESG or Sustainability Terms ---
 Purpose: Detect use of ESG or impact terminology without clear meaning.
@@ -853,7 +1025,7 @@ Examples to flag:
 Purpose: Capture ambiguity around how broadly ESG considerations apply.
 
 Detection Question:
-Does the content fail to specify the scope, consistency, or limitations of ESG or impact considerations? Consider whether ESG is implied to apply universally when it does not.
+Does the content fail to specify how broadly or consistently ESG considerations are applied, such that ESG appears more central or universal than it actually is?
 
 Examples to flag:
 • "ESG is central to our investment process" without scope
@@ -875,7 +1047,7 @@ Examples to flag:
 Purpose: Identify vague references to ESG measurement or standards.
 
 Detection Question:
-Does the content reference ESG metrics, scores, ratings, or frameworks without identifying the source, methodology, or limitations? Consider whether the reference implies rigor without clarity.
+Does the content reference ESG scores, ratings, standards, or frameworks without identifying the source, methodology, or limitations?
 
 Examples to flag:
 • "High ESG scores" without source
@@ -987,7 +1159,3 @@ Return JSON array only. Each item:
 }
 
 If no issues: return []
-
-
-
-
