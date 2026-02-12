@@ -1,0 +1,793 @@
+{
+    "exam_defensibility_guardrail": {
+    "standard_of_review": "reasonable_investor",
+    "evaluation_basis": "statement_as_presented",
+    "materiality_threshold": "could_influence_investor_understanding",
+    "prohibited_language": [
+      "marketing best practice",
+      "tone issue",
+      "sounds promotional",
+      "could be clearer",
+      "better phrasing"
+    ],
+    "required_rationale_elements": [
+      "what_impression_is_created",
+      "why_that_impression_is_misleading_or_unbalanced",
+      "what_information_is_missing_or_overstated"
+    ]
+  },
+
+  "theme": "Theme 1 - Misleading, Exaggerated, or Unsubstantiated Claims",
+  "core_risk": "Claims that could mislead a reasonable investor because they (a) lack a reasonable basis, (b) overstate certainty or outcomes, (c) assert superiority without a defined basis, or (d) present benefits without sufficient limitations, risks, or conditions.",
+  "assignment_rule": "Assign exactly ONE sub-bucket per issue.",
+  "skip_guardrail": "If content contains no claims (no statements about performance, benefits, superiority, outcomes, or recommendations) → return []",
+  "sub_buckets": [
+    {
+      "sub_bucket": 1,
+      "name": "Unsubstantiated or Inadequately Supported Statements of Fact",
+      "scope": "Identify objective, measurable claims presented as fact (performance, ranking, size, comparative outcomes, quantified benefits) where a reasonable investor would expect supporting data or a cited basis - and none is provided in the same section or clearly linked footnote.",
+      "detect": "Identify statements of fact, comparison, or superiority that lack adequate data, evidentiary support, verification, or methodological explanation at the point of claim.",
+      "ask": [
+        "Does the content assert objective dominance, ranking, or status as fact, without identifying a defined universe, timeframe, data source, or methodology?",
+        "Does the statement assert actual performance or outcomes that would reasonably require data, but none is provided?",
+        "Does the statement compare performance or quality relative to others, without identifying the comparator, universe, or basis?",
+        "Does the statement use language that implies measurement or magnitude, where a reader would expect defined metrics, but none are provided?",
+        "Does the statement reference research, data, or studies as proof, without identifying the source, scope, or nature of that support?"
+      ],
+      "flag_when": [
+        "best", "top", "most trusted", "the market leader", "top-performing", "leading",
+        "proven to outperform", "consistently delivers", "demonstrated superior",
+        "outperforms peers", "better risk-adjusted returns", "more effective than", "superior to competing",
+        "meaningful alpha", "low volatility with strong upside", "optimized risk-adjusted returns", "significant downside protection",
+        "research shows", "data confirms", "risk free", "perfect opportunity", "will outperform the market", "guaranteed returns", "cannot lose money", "will deliver superior returns", "superior results without comparison basis"
+      ],
+      "skip_when": [
+        "Opinion or belief framing is explicit: seeks to, aims to, designed to, we look to, we believe, in our view, our philosophy, we believe, typically",
+        "deep, broad perspectives", "disciplined investment approach", "experienced management team",
+        "our extensive size and scale", "considerable value", "we seek to mitigate risk", "we seek to anticipate",
+        "add considerable value", "add significant value"
+      ],
+      "before_flagging_verify": [
+        "Is there supporting data, figures, tables, or clearly identified sources nearby?",
+        "Are defined rankings, universes, or methodology descriptions provided?",
+        "Are there footnotes or endnotes that are proximate, readable, and substantively responsive?",
+        "Is it framed as opinion, belief, philosophy, or aspiration — not as fact?",
+        "Is it describing organizational capability without claiming outperformance or guaranteed results?",
+        "Is it a qualitative process descriptor, not a quantified outcome claim?"
+      ],
+      "logic_gate": {
+        "commit_rule": {
+          "flag_if_all_true": [
+            "statement_is_presented_as_fact",
+            "statement_implies_measurable_or_verifiable_outcome",
+            "no_data_source_benchmark_timeframe_or_methodology_provided"
+          ]
+        },
+        "false_positive_trap": {
+          "do_not_flag_if_any_true": [
+            "statement_is_opinion_or_philosophy",
+            "statement_describes_process_or_capability_only",
+            "statement_is_non_measurable_positioning"
+          ]
+        },
+        "decisive_test": "Could this statement be proven true or false with data? If yes and no support is provided → SB1.",
+        "boundary": "If it's a superlative (best/leading/unmatched) → SB4. If it's certainty of future results → SB2 (explicit) or SB3 (implied). If it's qualitative and not measurable → SB7 (only if material)."
+      },
+      "if_not_this_bucket": {
+        "purely_qualitative_no_measurement_implication": 7,
+        "issue_is_certainty_not_evidence": [2, 3],
+        "comparator_exists_elsewhere_and_clearly_linked": "do not flag"
+      },
+      "examples": {
+        "flag": [
+          {"text": "The best firm for producing top results.", "signal": "Superlative factual claim without data or defined universe"},
+          {"text": "A market leader in active management.", "signal": "Leadership claim without defined comparison group"},
+          {"text": "Proven to outperform over time.", "signal": "Performance outcome asserted without data"},
+          {"text": "Consistently delivers strong results.", "signal": "Outcome claim requiring evidence, none provided"},
+          {"text": "Outperforms peers.", "signal": "Comparative claim without identified comparator"},
+          {"text": "Delivers meaningful alpha.", "signal": "Quantitative-sounding claim without metric or benchmark"},
+          {"text": "Research shows...", "signal": "Evidence gesture without identifying source or scope"}
+        ],
+        "clear": [
+          {"text": "Providing stability and leadership.", "reason": "Positioning language, no measurement implication"},
+          {"text": "Disciplined investment approach.", "reason": "Process description, not performance assertion"},
+          {"text": "We seek to mitigate risk.", "reason": "Aspirational framing with 'seek to'"},
+          {"text": "Our extensive size and scale benefits our clients.", "reason": "Organizational capability, not outperformance claim"},
+          {"text": "Our firm has implemented world-class risk management systems to add value to our investment process.", "reason": "Superlative permissible when describing internal capability with surrounding explanation, not asserting peer outperformance"}
+        ],
+        "boundary_note": "Superlatives like 'world-class' are permissible when supported by surrounding explanation of capability. Standalone material fact without backup → flag."
+      }
+    },
+    {
+      "sub_bucket": 2,
+      "name": "Promissory or Certain-Outcome Language",
+      "scope": "Explicit or functionally explicit guarantees of future results — including certainty verbs, framing that removes uncertainty, certainty via institutional authority, implied guarantees without absolute words, and certainty masked as design intent.",
+      "detect": "Identify statements that convert future outcomes into certainty, using language, structure, or framing that eliminates or materially neutralizes uncertainty, such that a reasonable investor would understand the result as assured.",
+      "ask": [
+        "Does the content use certainty verbs (will, ensures, delivers, guarantees, secures, cannot fail, eliminates risk) to describe outcomes as inevitable?",
+        "Does the statement frame future performance as predictable, inevitable, or effectively risk-free?",
+        "Does the content rely on institutional credibility or process to imply certainty of outcome rather than probability?",
+        "Does the statement imply a guaranteed outcome even without explicit promise — success portrayed as reliable, dependable, or assured?",
+        "Does the content describe design or intent in a way that implies the outcome will in fact occur?"
+      ],
+      "flag_when": [
+        "will outperform", "ensures", "delivers", "guarantees", "secures", "cannot fail", "eliminates risk",
+        "removes the uncertainty", "takes the guesswork out", "engineered to be reliable", "regardless of market conditions",
+        "will deliver", "proven framework ensures", "institutional discipline guarantees",
+        "reliable way to generate", "built to consistently win", "smarter path to", "dependable source of",
+        "designed to outperform", "constructed to provide", "engineered for superior"
+      ],
+      "skip_when": [
+        "seeks to outperform", "aims to generate", "may help reduce", "intended to provide",
+        "designed to seek", "a disciplined investment process", "focused on managing risk", "built with risk management in mind",
+        "may", "might", "could", "potentially", "subject to risk", "depending on market conditions", "no guarantee", "there is no assurance"
+      ],
+      "before_flagging_verify": [
+        "Does the same sentence contain meaningful hedging (may, might, could, potentially, subject to risk)?",
+        "If hedging is present and not contradicted → DO NOT FLAG.",
+        "Is the language clearly aspirational or goal-oriented, not asserting certainty?",
+        "Is it limited to process description without outcome certainty?"
+      ],
+      "logic_gate": {
+        "commit_rule": {
+          "flag_if_all_true": [
+            "future_outcome_is_stated",
+            "certainty_or_inevitability_is_expressed",
+            "no_hedging_present_in_same_sentence"
+          ]
+        },
+        "false_positive_trap": {
+          "do_not_flag_if_any_true": [
+            "seeks_to_or_aims_to_language_used",
+            "may_might_could_present",
+            "statement_is_process_only"
+          ]
+        },
+        "decisive_test": "Ask: 'Does this sentence remove ALL uncertainty about a future outcome?' If a reader could reasonably interpret the statement as a promise or guarantee of results → flag. If the sentence preserves doubt ('may,' 'seeks,' 'aims,' 'potential') → do not flag.",
+        "boundary": "If certainty is conveyed through framing, tone, or repetition — NOT explicit certainty verbs → SB3, not SB2. If the issue is missing evidence rather than certainty → SB1."
+      },
+      "if_not_this_bucket": {
+        "certainty_implied_through_framing_tone_omission_not_explicit_language": 3,
+        "hedging_present_in_same_sentence_and_not_contradicted": "do not flag",
+        "hedging_elsewhere_does_not_cure": "Sub-Bucket 2 still applies if the claim itself conveys certainty"
+      },
+      "examples": {
+        "flag": [
+          {"text": "This strategy will outperform over a full market cycle.", "signal": "Certainty verb 'will' applied to future outcome"},
+          {"text": "Our disciplined process ensures superior long-term results.", "signal": "'Ensures' converts outcome to certainty"},
+          {"text": "This approach removes the uncertainty of market timing.", "signal": "Frames uncertainty as resolved"},
+          {"text": "Backed by decades of experience, the strategy will deliver results.", "signal": "Authority used to imply certainty of outcome"},
+          {"text": "A reliable way to generate superior returns.", "signal": "Reliability + superiority without hedging"},
+          {"text": "Engineered for superior risk-adjusted returns.", "signal": "Engineering metaphor implying assured result"}
+        ],
+        "clear": [
+          {"text": "Seeks to outperform.", "reason": "'Seeks to' = aspirational, not certain"},
+          {"text": "May help reduce volatility.", "reason": "'May' = probabilistic hedging"},
+          {"text": "Designed to seek long-term growth.", "reason": "'Designed to seek' = double hedge"},
+          {"text": "A disciplined investment process.", "reason": "Process description, no outcome certainty"}
+        ],
+        "boundary_note": "If it's a superlative (best/leading/unmatched) → SB4. If it's certainty of future results → SB2 (explicit) or SB3 (implied). If it's qualitative and not measurable → SB7 (only if material)."
+      }
+    },
+    {
+      "sub_bucket": 3,
+      "name": "Implied Guarantees or Certainty",
+      "scope": "Certainty created through framing, tone, or contextual emphasis — even where no explicit guarantee is stated. Includes certainty via repetition or emphasis, selective context or omission, tone conveying assurance, visual or structural framing, and narrative or storytelling.",
+      "detect": "Identify statements that, through framing, tone, repetition, visual emphasis, or contextual placement, imply certainty of outcome or eliminate perceived risk — even where no explicit guarantee or promissory language is used.",
+      "ask": [
+        "Does the content repeatedly emphasize success or positive outcomes in a way that conveys inevitability — repetition crowding out uncertainty?",
+        "Does the content present benefits without corresponding discussion of limitations or risks — omission creating a false sense of certainty?",
+        "Does the tone convey assurance or inevitability beyond what facts reasonably justify — tone substituting for evidence?",
+        "Does visual presentation or structural placement emphasize certainty in a way that could override caveats (font, headlines, charts)?",
+        "Does the narrative suggest a predictable outcome based on selective examples — anecdotes presented as representative, not illustrative?"
+      ],
+      "flag_when": [
+        "multiple references to 'consistent success' without counterbalancing risk",
+        "repeated 'proven,' 'reliable,' 'disciplined' without qualification",
+        "headline and sub-headline both emphasizing superior outcomes",
+        "highlighting returns without mentioning variability",
+        "downside protection without acknowledging limits",
+        "a strategy investors can rely on",
+        "built for confidence in any market",
+        "a solution you can trust",
+        "bold/headline claims with buried qualifiers",
+        "charts showing only favorable periods",
+        "success stories without variability context",
+        "process → success narratives without uncertainty",
+        "will generate returns (vs. seeks to generate)",
+        "will provide (vs. is structured to provide)",
+        "will produce (vs. pursues)",
+        "will result in (vs. may result in)",
+        "will lead to (vs. is intended to lead to)",
+        "will create (vs. seeks to create)",
+        "will maximize (vs. attempts to maximize)",
+        "has consistently outperformed (without past performance qualifier)",
+        "demonstrates superior returns (without historical qualifier)",
+        "achieves above-average results (without time period limitation)",
+        "produces positive outcomes (without historically qualifier)",
+        "delivers strong performance (without market condition caveat)",
+        "WILL benefit from (all caps = certainty)",
+        "absolutely positioned to (absolutism)",
+        "definitely provides (definitive language)",
+        "certainly delivers (certainty claim)",
+        "undoubtedly achieves (no doubt language)",
+        "clearly demonstrates (overly confident)",
+        "obviously superior (assumed certainty)",
+        "without question (removes doubt)",
+        "leads to higher returns (direct causation without qualification)",
+        "results in better outcomes (guaranteed result)",
+        "ensures portfolio growth (certain outcome)",
+        "creates wealth (definite result)",
+        "produces income (guaranteed production)",
+        "generates alpha (certain generation without conditions)"
+      ],
+      "skip_when": [
+        "confident or professional tone when appropriately balanced and contextualized",
+        "superlatives describing design/intent, not claiming superiority or guaranteed results",
+        "descriptive, not comparative — not ranking against peers"
+      ],
+      "before_flagging_verify": [
+        "Evaluate surrounding language, visual presentation, disclosures, and benefit-risk balance.",
+        "Does the overall presentation actually imply certainty, or is it just confident tone?",
+        "Are disclosures present AND prominent enough to counter the framing?"
+      ],
+      "logic_gate": {
+        "commit_rule": {
+          "flag_if_all_true": [
+            "no_explicit_certainty_verbs_used",
+            "overall_framing_or_context_implies_inevitability",
+            "limitations_or_risks_are_absent_or_structurally_buried"
+          ]
+        },
+        "false_positive_trap": {
+          "do_not_flag_if_any_true": [
+            "balanced_risk_language_is_prominent",
+            "tone_is_confident_but_not_assuring"
+          ]
+        },
+        "decisive_test": "Would a reasonable investor infer the outcome is essentially guaranteed based on framing alone?",
+        "boundary": "If explicit certainty verbs are used ('will,' 'ensures,' 'guarantees') → SB2, not SB3. If the issue is missing evidence rather than framing → SB1. SB3 captures certainty through CONTEXT, not WORDS."
+      },
+      "if_not_this_bucket": {
+        "explicit_promissory_language_used": 2,
+        "issue_is_lack_of_evidence_not_framing": 1
+      },
+      "examples": {
+        "flag": [
+          {"text": "Our strategy provides downside protection during market volatility, helping investors stay invested with confidence.", "signal": "Protection framed without limits, confidence without qualification"},
+          {"text": "Positioned for Growth in Any Market Environment. Through disciplined portfolio construction and active risk management, the strategy captures opportunities across market cycles while delivering consistent results.", "signal": "Headline + body create inevitability narrative"},
+          {"text": "During periods of market stress, our disciplined approach helped clients preserve capital and remain invested.", "signal": "Success story without variability context — anecdote as representative"},
+          {"text": "[Chart showing only positive rolling returns] The strategy has delivered positive outcomes across multiple environments.", "signal": "Selective visual + narrative = implied certainty"},
+          {"text": "Our approach protects portfolios from downside risk while maintaining upside participation.", "signal": "Protection framed as feature without tradeoffs or limits"},
+          {"text": "A strategy investors can rely on.", "signal": "Tone conveys assurance beyond facts"}
+        ],
+        "clear": [
+          {"text": "Confident or professional tone when appropriately balanced and contextualized.", "reason": "Confidence alone is not certainty"},
+          {"text": "Superlatives describing design or intent, not claiming superiority or guaranteed results.", "reason": "Descriptive, not comparative or promissory"}
+        ],
+        "boundary_note": "SB3 = certainty through framing, NOT explicit language. If explicit promissory words → SB2. If lack of evidence → SB1."
+      }
+    },
+    {
+      "sub_bucket": 4,
+      "name": "Overstated, Absolute, or Best-in-Class Claims",
+      "scope": "Unqualified superlatives and absolutes — including absolute or superlative language, best-in-class or leadership claims without definition, superiority claims without comparative basis, absolutes embedded in descriptive language, and cumulative overstatement across statements.",
+      "detect": "Identify statements that use absolute, superlative, or best-in-class language to assert superiority, quality, or outcomes without appropriate qualification, definition, comparison basis, or evidentiary support.",
+      "ask": [
+        "Does the statement use absolute or superlative terms (best, unmatched, premier, world-class, only) asserting superiority without qualification?",
+        "Does the statement assert best-in-class, leading, or similar status without defining the comparison group, timeframe, or criteria?",
+        "Does the content assert superiority (better, stronger, superior, more effective) without identifying what it is superior to?",
+        "Does descriptive language embed implicit superiority that elevates opinion into assertion?",
+        "Does the cumulative effect of multiple statements create a best-in-class impression even if no single statement does?"
+      ],
+      "flag_when": [
+        "the best", "unmatched", "a perfect solution", "the only strategy",
+        "best-in-class approach", "a leading provider", "among the top firms", "a premier asset manager",
+        "superior results", "better performance outcomes", "stronger risk management", "more effective strategies",
+        "world-class performance", "exceptional results", "elite capabilities", "best-of-breed",
+        "headline claiming leadership + bullets asserting superiority", "multiple unqualified 'top'/'leading'/'best'"
+      ],
+      "skip_when": [
+        "we believe our approach is differentiated", "in our view",
+        "designed to deliver high-quality solutions", "focused on excellence in execution", "committed to strong risk management",
+        "clearly subjective best-in-class framed with 'we believe'"
+      ],
+      "before_flagging_verify": [
+        "Does the content provide a defined comparison group, criteria, methodology, timeframe, or data?",
+        "Is the absolute clearly framed as opinion ('we believe') rather than fact?",
+        "If clearly defined and supported → do not flag."
+      ],
+      "logic_gate": {
+        "commit_rule": {
+          "flag_if_all_true": [
+            "absolute_or_superlative_language_used",
+            "statement_is_presented_as_objective_fact",
+            "no_defined_comparator_criteria_or_universe"
+          ]
+        },
+        "false_positive_trap": {
+          "do_not_flag_if_any_true": [
+            "opinion_framing_present",
+            "design_or_intent_language_only"
+          ]
+        },
+        "decisive_test": "Is this presented as market fact rather than opinion?",
+        "boundary": "If the claim lacks evidence but is not a superlative → SB1. If the superlative has certainty verbs attached ('will deliver the best') → SB2 takes priority. SB4 is specifically about unqualified absolutes and superlatives stated as fact."
+      },
+      "if_not_this_bucket": {
+        "clearly_subjective_opinion_framing": "do not flag unless framed as fact",
+        "missing_evidence_for_factual_claim_not_superlative": 1
+      },
+      "examples": {
+        "flag": [
+          {"text": "The best investment solution available.", "signal": "Unqualified absolute"},
+          {"text": "Unmatched expertise in active management.", "signal": "Absolute without comparison basis"},
+          {"text": "A best-in-class approach to portfolio construction.", "signal": "Best-in-class without defined universe or criteria"},
+          {"text": "Superior results.", "signal": "Superiority without comparator"},
+          {"text": "World-class performance.", "signal": "Superlative asserted as fact"},
+          {"text": "Best-of-breed risk controls.", "signal": "Best-in-class without criteria"}
+        ],
+        "clear": [
+          {"text": "We believe our approach is differentiated.", "reason": "Opinion framing with 'we believe'"},
+          {"text": "Designed to deliver high-quality solutions.", "reason": "Design intent, not factual superiority"},
+          {"text": "Committed to strong risk management.", "reason": "Commitment statement, not superiority claim"}
+        ],
+        "boundary_note": "Opinion framing ('we believe') protects superlatives. Framed as fact or dominance → flag."
+      }
+    },
+    {
+      "sub_bucket": 5,
+      "name": "Unbalanced Presentation of Benefits",
+      "scope": "Benefit emphasis without corresponding risks, limitations, or conditions — including benefits without nearby risk context, asymmetric upside vs downside emphasis, risk-reduction claims without conditions or tradeoffs, benefits stated as general truths without context, and structural or visual imbalance.",
+      "detect": "Identify statements that emphasize benefits, advantages, or favorable outcomes without proportionate disclosure of material risks, limitations, assumptions, or conditions, such that the overall presentation could create a misleading impression.",
+      "ask": [
+        "Does the content highlight benefits without corresponding disclosure of material risks in the same section or immediate context?",
+        "Would a reasonable investor notice the upside more than the downside?",
+        "Does the statement claim to reduce or limit risk without describing conditions, assumptions, or tradeoffs?",
+        "Does the content present benefits as broadly applicable without clarifying applicability or suitability?",
+        "Does the structure or visual presentation emphasize benefits while diminishing visibility of risks?"
+      ],
+      "flag_when": [
+        "a very beneficial strategy (no nearby risk)", "enhanced return potential (no downside context)", "reduced risk profile (no measurement)",
+        "multiple benefit bullets with single buried risk footnote", "charts highlighting gains without drawdowns",
+        "reduces downside risk (no scenario limits)", "provides protection (no limits)", "lower risk approach (no metrics)",
+        "ideal for long-term investors (undefined)", "suitable for uncertain markets (no constraints)",
+        "benefits in headlines, risks in fine print", "callout boxes for upside only", "risk disclosures far from benefit claims",
+        "maximizes returns (without mentioning increased volatility)",
+        "enhances portfolio performance (without downside risk)",
+        "delivers superior results (without risk of underperformance)",
+        "optimizes growth potential (without drawdown disclosure)",
+        "generates alpha (without tracking error or risk)",
+        "increases yield (without credit/interest rate risk)",
+        "provides growth opportunities (without loss potential)",
+        "captures upside potential (without downside exposure)",
+        "enhances diversification (without correlation risk)",
+        "improves risk-adjusted returns (without defining risk metrics)",
+        "lower fees mean more returns (without service level impact)",
+        "cost-effective solution (without feature limitations)",
+        "competitive pricing (without minimum investment requirements)",
+        "reduces expenses (without transaction cost disclosure)",
+        "fee savings (without performance impact disclosure)",
+        "automated portfolio management (without human oversight limits)",
+        "24/7 access (without response time limitations)",
+        "real-time monitoring (without delay disclaimers)",
+        "instant rebalancing (without market impact costs)",
+        "AI-driven insights (without model limitations)",
+        "customized solutions (without customization constraints)",
+        "comprehensive analysis (without scope limitations)",
+        "advanced tools (without learning curve or complexity)",
+        "tax-efficient strategies (without specific tax situation dependency)",
+        "minimizes tax liability (without individual circumstances caveat)",
+        "tax loss harvesting benefits (without wash sale risk)",
+        "tax-deferred growth (without distribution tax implications)",
+        "reduces portfolio volatility (without return impact)",
+        "lowers downside risk (without upside limitation)",
+        "provides downside protection (without cost or conditions)",
+        "hedges against market decline (without hedging costs)",
+        "protects capital (without opportunity cost)",
+        "minimizes drawdowns (without concentration risk)",
+        "Very beneficial strategy with no nearby risk mention",
+        "Provides enhanced returns without volatility disclosure",
+        "Reduces risk without limitations or conditions",
+        "Outperforms peers without defining peer group or time period",
+        "Strong track record without specifying period or metric",
+        "Top performer without year, category, or source",
+        "is a very beneficial strategy",
+        "will be used",
+        "will play a role",
+        "Removal of may, might, could from hedged statements"
+      ],
+      "skip_when": [
+        "risks disclosed in the same section and clearly linked",
+        "risk language sufficiently clear and prominent to avoid misleading impression"
+      ],
+      "before_flagging_verify": [
+        "Does balancing language appear in the same section or immediate context?",
+        "Is it sufficiently clear and prominent?",
+        "If adequate balance is present → do not flag.",
+        "Check the same section for balancing language (however, subject to market risk, no assurance, may result in loss).",
+        "Confirm essential context (who, what, when, how measured) is genuinely missing.",
+        "Confirm the edit or phrasing materially increases certainty of outcome."
+      ],
+      "logic_gate": {
+        "commit_rule": {
+          "flag_if_all_true": [
+            "benefits_are_emphasized",
+            "material_risks_or_limitations_not_present_in_same_section",
+            "presentation_skews_overall_risk_reward_impression"
+          ]
+        },
+        "false_positive_trap": "Do NOT flag benefit statements that have risk disclosures in the same section. Proximity matters — risk language on the same page or in the same section counts. Risk language buried 5 pages later or in fine-print footnotes does NOT cure. Also: not every positive statement needs a risk caveat — only material benefit claims that could skew investor expectations.",
+        "decisive_test": "Ask: 'Would a reasonable investor reading ONLY THIS SECTION come away with a materially skewed impression of risk vs. reward?' If the section reads as all upside with no acknowledgment of downside → flag. If risks are present, visible, and linked → do not flag.",
+        "boundary": "If the issue is missing evidence for a specific claim → SB1. If the issue is certainty of outcome → SB2/SB3. SB5 is specifically about IMBALANCE — benefits present, risks absent or buried."
+      },
+      "if_not_this_bucket": {
+        "risks_disclosed_elsewhere": "cures only if clearly linked and reasonably proximate"
+      },
+      "examples": {
+        "flag": [
+          {"text": "The strategy offers enhanced return potential through active security selection and dynamic portfolio construction.", "signal": "Upside emphasized, risk acknowledged only abstractly"},
+          {"text": "Our disciplined investment process reduces portfolio risk while pursuing long-term growth.", "signal": "Risk reduction without tradeoffs"},
+          {"text": "Key Benefits: Access to growth opportunities, Active risk management, Flexible portfolio construction, Long-term return potential. [Risk disclosure on last page in small font]", "signal": "Upside-heavy bullet list, risk structurally buried"},
+          {"text": "Reduces downside risk.", "signal": "Risk reduction without scenario limitations"},
+          {"text": "Provides protection in volatile markets.", "signal": "Protection without limits stated"}
+        ],
+        "clear": [
+          {"text": "[Benefits stated with risks disclosed in the same section and clearly linked]", "reason": "Balance is present and proximate"},
+          {"text": "[Risk language sufficiently clear and prominent to avoid misleading impression]", "reason": "Prominence sufficient — not buried or diminished"}
+        ],
+        "boundary_note": "Risk disclosed elsewhere cures ONLY if clearly linked and reasonably proximate. Buried fine print does NOT cure."
+      }
+    },
+    {
+      "sub_bucket": 6,
+      "name": "Exaggerated or Amplified Claims",
+      "scope": "Material overstatement of capability, experience, or outcomes — including progressive amplification across edits or versions, capability or experience overstatement, outcome amplification without new support, cumulative effect across statements or sections, and removal of constraints, conditions, or scope.",
+      "detect": "Identify statements or combinations that exaggerate or amplify capabilities, experience, or outcomes such that the overall impression materially overstates what is accurate or reasonable — including cumulative exaggeration.",
+      "ask": [
+        "Has language been escalated over time, replacing hedged language with stronger assertions?",
+        "Does the content overstate capabilities, experience, or history relative to what can be reasonably supported?",
+        "Does the content amplify expected outcomes without new data or substantiation?",
+        "Does the combined effect of multiple statements materially overstate capability, even if each is individually reasonable?",
+        "Have qualifiers, limitations, or scope constraints been removed in a way that materially broadens the claim?"
+      ],
+      "flag_when": [
+        "'may be welcomed' → 'is a very beneficial strategy'",
+        "'can be used' → 'will be used'",
+        "'will likely play a role' → 'will play a role'",
+        "removal of 'may,' 'might,' 'could'",
+        "implying institutional-scale where limited",
+        "pilot programs presented as mature",
+        "newly launched framed as long-standing",
+        "narrow experience described as comprehensive",
+        "'strong results' → 'exceptional results'",
+        "'early success' → 'proven success'",
+        "headline leadership + body superiority + conclusion inevitability",
+        "removing 'to date'/'initially'",
+        "eliminating 'in select cases'/'under certain conditions'"
+      ],
+      "skip_when": [
+        "polished or marketing-oriented language that is still supported",
+        "the strategy has evolved over time",
+        "we continue to refine our process",
+        "early feedback has been positive"
+      ],
+      "before_flagging_verify": [
+        "Is the amplified claim supported by new or additional evidence?",
+        "Does the cumulative presentation materially change the reasonable takeaway?",
+        "If amplification is not material → do not flag."
+      ],
+      "logic_gate": {
+        "commit_rule": {
+          "flag_if_all_true": [
+            "language_strength_has_escalated",
+            "qualifiers_or_scope_have_been_removed",
+            "no_new_supporting_evidence_added"
+          ]
+        },
+        "false_positive_trap": "Do NOT flag polished marketing language that is still substantively accurate. Style upgrade ≠ exaggeration. 'May be welcomed' → 'Is well-received by clients' is style. 'May be welcomed' → 'Is a very beneficial strategy' is substance — the claim got stronger without new evidence. Also: 'the strategy has evolved' and 'early feedback has been positive' are appropriately scoped, not amplified.",
+        "decisive_test": "Did the claim become substantively stronger without new support?",
+        "boundary": "If the issue is a single unsubstantiated claim (not escalation) → SB1. If the issue is certainty language → SB2. SB6 specifically captures DRIFT — where language moved from accurate to overstated across versions or within cumulative presentation."
+      },
+      "if_not_this_bucket": {
+        "aggregation_adds_emphasis_but_does_not_change_impression": "do not flag"
+      },
+      "examples": {
+        "flag": [
+          {"text": "Earlier: 'May be welcomed' → Marketing: 'Is a very beneficial strategy'", "signal": "Hedged language escalated to assertion"},
+          {"text": "Earlier: 'Will likely play a role' → Marketing: 'Will play a role'", "signal": "Qualifier removed, broadening claim"},
+          {"text": "Pilot programs presented as fully mature solutions.", "signal": "Maturity exaggeration"},
+          {"text": "Earlier: 'Strong results' → Marketing: 'Exceptional results'", "signal": "Outcome amplification without new evidence"},
+          {"text": "Earlier: 'The strategy may play a role in improving risk-adjusted returns.' → Marketing: 'The strategy has delivered strong results, positioning it as an exceptional solution for today's markets.'", "signal": "Full version drift — hedged possibility → exceptional fact"}
+        ],
+        "clear": [
+          {"text": "The strategy has evolved over time.", "reason": "Factual evolution statement, not exaggeration"},
+          {"text": "We continue to refine our process.", "reason": "Ongoing improvement, not overstating maturity"},
+          {"text": "Early feedback has been positive.", "reason": "Appropriately scoped, not amplified"}
+        ],
+        "boundary_note": "Aggregation must materially change the impression, not just add emphasis. Polished marketing tone alone is not exaggeration."
+      }
+    },
+    {
+      "sub_bucket": 7,
+      "name": "Vague, Ambiguous, or Undefined Claims",
+      "scope": "Language preventing reasonable investor understanding — including undefined qualitative descriptors, unclear terms, undefined metrics, ambiguous comparators or peer references, unclear scope, timing, or applicability, and amorphous or marketing-oriented language without substance.",
+      "detect": "Identify statements that rely on vague, ambiguous, undefined, or amorphous terms such that a reasonable investor cannot understand the scope, meaning, basis, or implications of the claim.",
+      "ask": [
+        "Does the content use qualitative descriptors without defining what they mean in practice?",
+        "Does the statement reference metrics or evaluation standards without identifying how they are calculated or assessed?",
+        "Does the content compare performance or quality without defining the comparator or peer group? (Can you identify WHAT it is compared to?)",
+        "Does the statement omit key information about timing, scope, conditions, or applicability?",
+        "Does the statement rely on marketing language that sounds substantive but conveys no concrete information, where lack of clarity affects a material claim?"
+      ],
+      "flag_when": [
+        "strong performance (no explanation)", "robust risk management (no definition)", "high-quality investments (no criteria)", "innovative approach (no description)",
+        "attractive risk-adjusted returns (no metric)", "low volatility strategy (no measure)", "superior returns (no benchmark/timeframe)",
+        "outperforms peers (undefined)", "top performer (of what?)", "leading in the industry (which?)", "above-average results (average of what?)",
+        "delivers consistent results (what period?)", "effective in volatile markets (which?)", "suitable for long-term investors (definition?)",
+        "best-of-breed capabilities", "next-generation solutions", "holistic portfolio approach", "institutional-quality outcomes",
+        "highly experienced team (without years or specific experience)",
+        "seasoned professionals (without tenure or background)",
+        "expert advisors (without credentials or specialization)",
+        "qualified specialists (without qualifications listed)",
+        "industry veterans (without years or previous roles)",
+        "award-winning (without award name, date, or criteria)",
+        "recognized leaders (without by whom or in what)",
+        "certified professionals (without certification type)",
+        "extensively trained (without training specifics)",
+        "deep expertise (without domain or years)",
+        "proprietary approach (without describing what makes it proprietary)",
+        "sophisticated analysis (without methodology explanation)",
+        "rigorous process (without process description)",
+        "disciplined strategy (without discipline specifics)",
+        "comprehensive methodology (without scope definition)",
+        "advanced techniques (without technique identification)",
+        "proven system (without proof or timeframe)",
+        "time-tested approach (without time period)",
+        "thorough research (without research scope)",
+        "systematic process (without system explanation)",
+        "cutting-edge technology (without technology description)",
+        "state-of-the-art platform (without platform capabilities)",
+        "advanced algorithms (without algorithm explanation)",
+        "sophisticated models (without model description)",
+        "powerful tools (without tool identification)",
+        "innovative solutions (without innovation specifics)",
+        "proprietary software (without software capabilities)",
+        "extensive client base (without numbers or segments)",
+        "wide range of clients (without client types)",
+        "serving clients since [year] (without continuity context)",
+        "trusted by many (without quantification)",
+        "numerous satisfied clients (without numbers or verification)",
+        "decades of experience (without specific years)",
+        "long-standing relationships (without duration)",
+        "established firm (without founding date)",
+        "competitive returns (without benchmark or period)",
+        "solid performance (without metrics or timeframe)",
+        "consistent results (without consistency definition)",
+        "attractive returns (without return figures)",
+        "favorable outcomes (without outcome definition)",
+        "positive results (without measurement criteria)",
+        "strong performance (without metrics)",
+        "impressive track record (without specifics)",
+        "exceeded expectations (without expectations defined)",
+        "full-service firm (without service list)",
+        "comprehensive offerings (without offering details)",
+        "wide array of products (without product list)",
+        "diverse capabilities (without capability enumeration)",
+        "broad expertise (without expertise areas)",
+        "extensive resources (without resource description)",
+        "multiple investment options (without option identification)",
+        "unique approach (without explaining uniqueness)",
+        "sets us apart (without comparison basis)",
+        "different from others (without difference specification)",
+        "unlike competitors (without competitor identification)",
+        "distinctive methodology (without distinction explanation)",
+        "special focus (without focus definition)"
+      ],
+      "skip_when": [
+        "providing stability and leadership through changing market environments",
+        "we bring deep, broad perspectives to global fixed income investing",
+        "focused on delivering long-term value for clients",
+        "statement explained by nearby facts showing what it means",
+        "descriptive words backed up by adjacent facts as summary of real information",
+        "language is descriptive, not comparative — not claiming superiority or promising specific results"
+      ],
+      "before_flagging_verify": [
+        "Are definitions, explanations, or metrics provided elsewhere in the same section?",
+        "Is the term commonly understood and used consistently within the document?",
+        "Is the vagueness material to investor understanding, or merely stylistic?"
+      ],
+      "logic_gate": {
+        "commit_rule": {
+          "flag_if_all_true": [
+            "term_is_undefined_or_ambiguous",
+            "term_is_part_of_material_claim",
+            "no_nearby_definition_or_explanation"
+          ]
+        },
+        "false_positive_trap": "Do NOT flag common industry descriptors that are understood in context. 'Providing stability and leadership' is positioning — not a material claim needing definition. 'Deep, broad perspectives' is philosophy. The trigger is: could a reasonable investor make a DIFFERENT DECISION based on different interpretations of this term? If the vague term is just color, not substance → do not flag.",
+        "decisive_test": "Could different reasonable readers interpret this term differently in a way that matters?",
+        "boundary": "If the term sounds measurable and implies metrics ('strong returns,' 'attractive risk-adjusted returns') → may be SB1, not SB7. SB7 is for qualitative vagueness without measurement implication. If the term is a superlative stated as fact → SB4."
+      },
+      "if_not_this_bucket": {
+        "sounds_measurable_implies_metrics": 1
+      },
+      "examples": {
+        "flag": [
+          {"text": "Strong performance.", "signal": "Undefined qualitative descriptor — strong by what measure?"},
+          {"text": "Robust risk management.", "signal": "Undefined — what makes it 'robust'?"},
+          {"text": "Attractive risk-adjusted returns.", "signal": "No metric identified for 'attractive'"},
+          {"text": "Outperforms peers.", "signal": "Peer group undefined"},
+          {"text": "Best-of-breed capabilities.", "signal": "Amorphous marketing — no concrete information"},
+          {"text": "Institutional-quality outcomes.", "signal": "No definition of institutional quality"}
+        ],
+        "clear": [
+          {"text": "Providing stability and leadership through changing market environments.", "reason": "Values/positioning — not a material claim"},
+          {"text": "We bring deep, broad perspectives to global fixed income investing.", "reason": "High-level philosophy, not misleading"},
+          {"text": "[Statement explained by nearby facts showing what it means]", "reason": "Descriptive words backed by adjacent facts = permissible summary"}
+        ],
+        "boundary_note": "If the phrase sounds measurable and implies metrics → may be SB1 instead. If purely qualitative without measurement implication → SB7 only if material."
+      }
+    },
+    {
+      "sub_bucket": 8,
+      "name": "Audience-Inappropriate Language or Complexity",
+      "scope": "Language creating misleading impressions through audience mismatch — including institutional or technical framing for retail audiences, oversimplification that masks risk or complexity, mismatch between product complexity and audience expectations, marketing tone that encourages overconfidence, and inconsistent audience signals within the same content.",
+      "detect": "Identify statements where sophistication, terminology, framing, or implied assumptions exceed or mismatch the intended audience's reasonable understanding, obscuring risk, overstating accessibility, or minimizing complexity.",
+      "ask": [
+        "Does the content use institutional or technical terminology without explanation when directed to a retail audience?",
+        "Does the content oversimplify strategies or risks in a way that masks material risk for the intended audience?",
+        "Is complex information presented as broadly suitable without clarifying prerequisites or investor sophistication?",
+        "Does the tone encourage confidence beyond what the audience should reasonably infer?",
+        "Does the content switch between institutional-level and retail-level framing in a confusing way?"
+      ],
+      "flag_when": [
+        "risk-adjusted alpha (unexplained)", "factor tilts (unexplained)", "basis points (unexplained)",
+        "a simple way to grow your money (no risk)", "smooth out market ups and downs (no limits)", "hands-off investing made easy (no tradeoffs)",
+        "complex strategies framed as universally appropriate", "advanced structures without prerequisites",
+        "invest with confidence (no risk discussion)", "a smarter way to invest (no tradeoffs)", "professional-grade results made accessible",
+        "retail marketing + institutional performance framing", "simplified headlines + technical footnotes"
+      ],
+      "skip_when": [
+        "technical language appropriate for institutional/professional audience",
+        "simplifies concepts while still conveying material risks and limitations"
+      ],
+      "before_flagging_verify": [
+        "What is the intended audience (retail, institutional, intermediary)?",
+        "Do explanations, definitions, or context appropriately bridge the complexity?",
+        "If language is appropriately tailored → do not flag."
+      ],
+      "logic_gate": {
+        "commit_rule": "ALL must be true: (1) The terminology, complexity, or framing mismatches the intended audience. (2) Material risk is obscured OR accessibility is overstated as a result. (3) No bridging explanation, definition, or context makes the content appropriate.",
+        "false_positive_trap": "Do NOT flag technical language that is appropriate for the stated audience. Institutional investors understand 'risk-adjusted alpha,' 'factor tilts,' and 'basis points' — no flag needed. The trap is assuming all content targets retail. ALWAYS identify the intended audience FIRST. Also: simplification that preserves material risks ('diversification helps manage risk') is fine — only simplification that HIDES risk is a problem.",
+        "decisive_test": "Ask: 'Does this content's complexity level match its audience — and if not, does the mismatch hide risk or overstate accessibility?' Institutional terms for institutional audience → fine. Retail-friendly oversimplification that masks real risk → flag. The mismatch must cause potential harm, not just be imperfect communication.",
+        "boundary": "SB8 is about audience mismatch. If the issue is missing evidence → SB1. If the issue is certainty → SB2/SB3. If the issue is benefit/risk imbalance → SB5. SB8 only applies when the SAME content would be fine for a different audience."
+      },
+      "if_not_this_bucket": {},
+      "examples": {
+        "flag": [
+          {"text": "Risk-adjusted alpha. [to retail audience, unexplained]", "signal": "Institutional term without plain-language context"},
+          {"text": "A simple way to grow your money.", "signal": "Oversimplification masking risk"},
+          {"text": "Hands-off investing made easy.", "signal": "Minimizes complexity and tradeoffs"},
+          {"text": "Invest with confidence.", "signal": "Encourages overconfidence without risk discussion"},
+          {"text": "Retail marketing language paired with institutional performance framing.", "signal": "Mixed audience signals"}
+        ],
+        "clear": [
+          {"text": "Technical language used for institutional or professional audience.", "reason": "Audience-appropriate — no mismatch"},
+          {"text": "Simplifies concepts while still conveying material risks and limitations.", "reason": "Appropriate simplification, not misleading"}
+        ],
+        "boundary_note": "Audience-appropriate simplification is permitted. Misleading simplification is not."
+      }
+    },
+    {
+      "sub_bucket": 9,
+      "name": "Unfair, Deceptive, or Unclear Communications",
+      "scope": "Holistic unfairness that could cause consumer or investor harm — including misleading omissions of material information, confusing or obscuring structure, mixed or contradictory messaging, language exploiting cognitive biases, and reasonable likelihood of investor harm. This bucket is for residual risk not captured by SB1–SB8.",
+      "detect": "Identify communications that, taken as a whole, are unfair, deceptive, or unclear in a manner that could reasonably cause investor harm — including through misleading omissions, confusing structure, or presentation that obscures material information.",
+      "ask": [
+        "Does the communication omit material information necessary to prevent a misleading impression?",
+        "Is the communication structured in a way that obscures, dilutes, or distracts from material information?",
+        "Does the content contain mixed, contradictory, or inconsistent messages that could confuse a reasonable investor?",
+        "Does the framing exploit urgency, fear, authority, or confidence in a way that impairs reasonable judgment?",
+        "Could the communication reasonably lead an investor to a decision they would not have made with clear, complete information?"
+      ],
+      "flag_when": [
+        "benefits without material limitations disclosed", "strategy without key risks noted",
+        "caveats buried after lengthy promotion", "risk disclosures separated by multiple sections",
+        "minimizing risk alongside significant risk warnings", "broad applicability + narrow disclaimers",
+        "'now is the time' without context", "authority appeals discouraging independent evaluation",
+        "overstated confidence → inappropriate risk-taking", "confusion about features/limitations"
+      ],
+      "skip_when": [
+        "persuasive or marketing-oriented but investor clearly understands terms and risks"
+      ],
+      "before_flagging_verify": [
+        "Is the issue more precisely addressed by Sub-Buckets 1–8? If so, classify there instead.",
+        "Does the communication, viewed holistically, present a reasonable risk of harm?",
+        "Is the harm reasonably foreseeable, not speculative?"
+      ],
+      "logic_gate": {
+        "commit_rule": {
+          "flag_if_all_true": [
+            "holistic_communication_is_unfair_or_deceptive",
+            "issue_does_not_fit_any_other_sub_bucket",
+            "foreseeable_investor_harm_exists"
+          ]
+        },
+        "false_positive_trap": "Do NOT use SB9 as a catch-all. SB9 is the LAST resort, not the first choice. Before flagging SB9, you MUST confirm the issue does not fit SB1–SB8 more precisely. If a claim lacks evidence → SB1, not SB9. If tone implies certainty → SB3, not SB9. SB9 captures HOLISTIC unfairness that emerges from the combination of elements, not from any single identifiable violation.",
+        "decisive_test": "Ask: 'Does this issue fit any of SB1–SB8?' If yes → classify there. If no, ask: 'Taken as a whole, would a reasonable investor be materially misled, and is the harm foreseeable — not speculative?' Both must be yes to flag SB9.",
+        "boundary": "SB9 is residual by design. Examples: contradictory messaging across sections (not a single claim issue), structural obscuring of material info (not just buried fine print for one benefit → SB5), or cognitive bias exploitation (urgency, fear) that doesn't fit other buckets. If you can name a more specific bucket → use it."
+      },
+      "if_not_this_bucket": {
+        "more_precisely_addressed_by": "Sub-Buckets 1–8 (this bucket is for residual risk only)"
+      },
+      "examples": {
+        "flag": [
+          {"text": "Benefits discussed without disclosing material limitations.", "signal": "Misleading omission"},
+          {"text": "Important caveats buried after lengthy promotional content.", "signal": "Structure obscures material info"},
+          {"text": "Statements minimizing risk alongside warnings implying significant risk.", "signal": "Contradictory messaging"},
+          {"text": "'Now is the time' messaging without context.", "signal": "Urgency exploiting cognitive bias"},
+          {"text": "Appeals to authority that discourage independent evaluation.", "signal": "Unfair persuasion tactic"}
+        ],
+        "clear": [
+          {"text": "Persuasive or marketing-oriented but investor clearly understands terms and risks.", "reason": "No foreseeable harm — investor informed"}
+        ],
+        "boundary_note": "SB9 is residual — if the issue fits SB1-SB8 more precisely, classify there. SB9 is for holistic unfairness that no single bucket captures."
+      }
+    },
+    {
+      "sub_bucket": 10,
+      "name": "ESG, Impact, Sustainability, or Qualitative Claims",
+      "scope": "ESG-specific vagueness or overstatement — including undefined ESG, sustainability, or impact terms, unspecified scope or consistency of ESG application, ESG outcome claims without evidence or metrics, ESG scores or ratings without identified source or methodology, and qualitative ESG language creating impression of rigor beyond what is supported.",
+      "detect": "Identify ESG, sustainability, or impact claims where the meaning, scope, methodology, or outcomes are unclear or unsupported, such that the claim could reasonably be misunderstood or overstated by an investor.",
+      "ask": [
+        "Does the content use ESG, sustainability, or impact terms without defining what they mean in practice?",
+        "Does the content fail to specify how broadly or consistently ESG considerations are applied — ESG appearing more central than it is?",
+        "Does the statement assert ESG outcomes without identifying evidence, metrics, or methodology?",
+        "Does the content reference ESG scores, ratings, or frameworks without identifying source, methodology, or limitations?",
+        "Does qualitative ESG language create an impression of rigor or leadership beyond what is clearly supported?"
+      ],
+      "flag_when": [
+        "sustainable investing approach (no definition)", "ESG-integrated strategy (no description of how)",
+        "impact-driven portfolio (no objectives)", "responsible investment philosophy (no criteria)",
+        "ESG is central to our process (no scope)", "we consider sustainability in all decisions (no caveats)",
+        "delivers positive environmental impact (no metrics)", "improves social outcomes (no measurement)",
+        "high ESG scores (no source)", "aligned with global sustainability standards (unnamed)",
+        "industry-leading ESG approach (no basis)", "best-in-class sustainability practices (no definition)"
+      ],
+      "skip_when": [
+        "expressing ESG philosophy, values, or intent",
+        "describing processes rather than outcomes, when clearly framed as such"
+      ],
+      "before_flagging_verify": [
+        "Are definitions, criteria, or methodologies clearly provided?",
+        "Are claimed ESG outcomes appropriately scoped and supported?",
+        "Is it aspirational ESG language not presented as fact or outcome?"
+      ],
+      "logic_gate": {
+        "commit_rule": "ALL must be true: (1) An ESG, sustainability, or impact claim is made. (2) The meaning, scope, methodology, or outcomes are undefined or unsupported. (3) The claim is NOT purely aspirational or process-descriptive.",
+        "false_positive_trap": "Do NOT flag ESG philosophy or values statements. 'We are committed to responsible investing' is aspiration — protected. 'Our ESG integration delivers positive environmental impact' claims outcomes — requires evidence. The line: expressing VALUES is fine; claiming RESULTS requires metrics. Also: 'we consider ESG factors in our process' is process description — permissible if not overstating how central ESG actually is.",
+        "decisive_test": "Ask: 'Is this claiming ESG OUTCOMES/RESULTS, or describing ESG INTENT/PROCESS?' Intent and process → do not flag. Outcomes without metrics, source, or methodology → flag. If 'sustainable' is used but never defined → flag only if a reasonable investor would misunderstand what 'sustainable' means for this product.",
+        "boundary": "If the claim lacks factual support but is not ESG-specific → SB1. If the claim uses absolute/best-in-class ESG language → SB4. SB10 is for ESG-SPECIFIC vagueness or overstatement that requires ESG domain knowledge to evaluate."
+      },
+      "if_not_this_bucket": {
+        "missing_factual_support_generally_not_esg_specific": 1,
+        "absolute_best_in_class_esg_claims": 4
+      },
+      "examples": {
+        "flag": [
+          {"text": "Sustainable investing approach.", "signal": "ESG term without definition of what 'sustainable' means in practice"},
+          {"text": "ESG-integrated strategy.", "signal": "No description of how ESG is integrated"},
+          {"text": "Delivers positive environmental impact.", "signal": "Outcome claim without metrics"},
+          {"text": "High ESG scores.", "signal": "No source, methodology, or framework identified"},
+          {"text": "Industry-leading ESG approach.", "signal": "Leadership claim without basis"}
+        ],
+        "clear": [
+          {"text": "Expressing ESG philosophy, values, or intent.", "reason": "Aspirational — not asserting outcomes"},
+          {"text": "Describing processes rather than outcomes, when clearly framed as such.", "reason": "Process description, not impact claim"}
+        ],
+        "boundary_note": "If the claim is about missing factual support generally (not ESG-specific) → SB1. If it's absolute/best-in-class ESG → SB4. SB10 is for ESG-specific vagueness or overstatement."
+      }
+    }
+  ]
+}
